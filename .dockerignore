@@ -1,0 +1,10 @@
+*
+!company/
+!credit_report/
+!credit_report_service/
+!main/
+!requirements.freeze.txt
+!uwsgi.yml
+
+# TODO remove the following
+!db.sqlite3
