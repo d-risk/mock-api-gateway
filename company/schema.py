@@ -1,22 +1,34 @@
-import graphene
+from django_filters import FilterSet
+from graphene.relay import Node
+from graphene.types import ObjectType, UUID
 from graphene_django import DjangoObjectType
+from graphene_django.filter import DjangoFilterConnectionField
 
-import company.models
+from company.models import Company
 
 
 # Annex F - Company Data Service
 # GraphQL data model
-class Company(DjangoObjectType):
+class CompanyFilter(FilterSet):
     class Meta:
-        model = company.models.Company
+        model = Company
+        fields = {
+            'name': ['icontains', ],
+            'industry': ['icontains', ],
+        }
 
 
-class CompanyQuery(graphene.ObjectType):
-    company = graphene.Field(Company, id=graphene.UUID())
-    companies = graphene.List(Company, company_name=graphene.String())
+class CompanyNode(DjangoObjectType):
+    company_id = UUID(description="The UUID of the company.")
 
-    def resolve_company(self, info, id):
-        return company.models.Company.objects.get(id=id)
+    class Meta:
+        model = Company
+        interfaces = [Node, ]
 
-    def resolve_companies(self, info, company_name):
-        return company.models.Company.objects.filter(name__icontains=company_name)
+    def resolve_company_id(self, info, **args) -> UUID:
+        return self.id
+
+
+class CompanyQuery(ObjectType):
+    company = Node.Field(CompanyNode, )
+    companies = DjangoFilterConnectionField(CompanyNode, filterset_class=CompanyFilter)

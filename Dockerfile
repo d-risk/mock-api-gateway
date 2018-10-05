@@ -2,11 +2,12 @@ FROM alpine:3.8
 
 RUN apk add --no-cache --update \
         python3 \
-    	uwsgi \
+        uwsgi \
     	uwsgi-python3
 
 ENV user app
 ENV workdir /home/${user}
+ENV APP_SECRET_KEY 123
 
 RUN addgroup -S ${user} && adduser -G ${user} -S ${user}
 
