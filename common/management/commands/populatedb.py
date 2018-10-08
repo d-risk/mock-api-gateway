@@ -18,7 +18,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         companies: int = options[COMPANIES]
         reports: int = options[REPORTS]
-        if companies and reports:
+        if companies:
             random_companies(companies, 2010, 2018)
         if options[SINGTEL]:
             create_singtel_company()
