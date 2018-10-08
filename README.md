@@ -52,7 +52,7 @@ Once the Docker image is built, it is time to run the image.
 Below is the commandline to run the image.
 
 ```commandline
-docker run --name credit-report-service --rm -it d-risk/credit-report-service
+docker run --name credit-report-service -p 8000:8080 --rm -it d-risk/credit-report-service
 ```
 
 When the Docker container is initialized, you can interact with this service using a browser through the given URL.
