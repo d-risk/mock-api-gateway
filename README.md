@@ -56,7 +56,7 @@ docker run --name credit-report-service -p 8000:8080 --rm -it d-risk/credit-repo
 ```
 
 When the Docker container is initialized, you can interact with this service using a browser through the given URL.
-E.g., `localhost:12345`.
+For example, using the above example, it would be `localhost:8000`.
 The port is the port that is mapped to the Docker container.
 
 ### Using Python
