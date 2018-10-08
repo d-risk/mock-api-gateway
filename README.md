@@ -33,6 +33,10 @@ Below is the commandline to create and populate the database with randomly gener
 python manage.py populatedb --companies 100 --singtel
 ```
 
+The first argument `--companies` specifies how many companies to be generated.
+The above example `--companies 100` will create 100 companies.
+The `--singtel` will add a credit report for the company Singapore Telecommunication Limited.
+
 There are two ways to start this service: as a Docker container or using Python.
 
 ### Using Docker
