@@ -14,3 +14,4 @@ uwsgi:
   uid: app
   venv: venv-app
   wsgi-file: credit_report_service/wsgi.py
+
