@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50)),
                 ('value', models.DecimalField(decimal_places=9, max_digits=99)),
-                ('financials_report', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='financials', to='credit_report.FinancialReport')),
+                ('financials_report', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='financials', to='financial_report.models.FinancialReport')),
             ],
             options={
                 'db_table': 'app_financials',

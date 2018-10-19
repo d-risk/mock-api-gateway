@@ -2,7 +2,8 @@ from datetime import datetime
 from typing import List
 
 from company.models import Company
-from credit_report.models import CreditReport, FinancialReport, Financials
+from credit_report.models import CreditReport, Financials
+from financial_report.models import FinancialReport
 
 
 def create_credit_report(

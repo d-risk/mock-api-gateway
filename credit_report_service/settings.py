@@ -66,6 +66,7 @@ INSTALLED_APPS: List[str] = [
     'graphene_django',
     'common',
     'company',
+    'financial_report',
     'news',
     'credit_report',
 ]

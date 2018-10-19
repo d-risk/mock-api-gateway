@@ -5,7 +5,7 @@ from django.utils.timezone import now
 # Create your models here.
 class News(Model):
     title = TextField(db_index=True, )
-    date = DateTimeField(default=now, )
+    date_time = DateTimeField(default=now, )
     snippet = TextField()
     url = URLField()
 

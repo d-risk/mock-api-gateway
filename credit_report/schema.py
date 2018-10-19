@@ -1,11 +1,12 @@
 import graphene
-from django_filters import FilterSet, NumberFilter
+from django_filters import FilterSet
 from graphene.relay import Node
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
-import credit_report
-from credit_report.models import CreditReport, FinancialReport
+from credit_report.models import CreditReport
+from financial_report.schema import FinancialReportFilter, FinancialReportNode
+from news.schema import NewsNode, NewsFilter
 
 
 # Annex G - Credit Report Service
@@ -18,40 +19,13 @@ class CreditReportFilter(FilterSet):
     @property
     def qs(self: FilterSet):
         if not hasattr(self, '_qs'):
-            qs = self.queryset.all().order_by('-report_date')
+            qs = self.queryset.all().order_by('-date_time')
             if self.is_bound:
                 # ensure form validation before filtering
-                self.errors
+                self.errors()
                 qs = self.filter_queryset(qs)
             self._qs = qs
         return self._qs
-
-
-class FinancialReportFilter(FilterSet):
-    class Meta:
-        model = FinancialReport
-        fields = ['report_date', ]
-
-    year = NumberFilter(field_name='report_date', lookup_expr='year')
-    from_year = NumberFilter(field_name='report_date', lookup_expr='year__gte')
-    to_year = NumberFilter(field_name='report_date', lookup_expr='year__lte')
-
-    @property
-    def qs(self: FilterSet):
-        if not hasattr(self, '_qs'):
-            qs = self.queryset.all().order_by('-report_date')
-            if self.is_bound:
-                # ensure form validation before filtering
-                self.errors
-                qs = self.filter_queryset(qs)
-            self._qs = qs
-        return self._qs
-
-
-class FinancialReportNode(DjangoObjectType):
-    class Meta:
-        model = FinancialReport
-        interfaces = [Node, ]
 
 
 class CreditReportNode(DjangoObjectType):
@@ -61,19 +35,19 @@ class CreditReportNode(DjangoObjectType):
 
     financial_reports = DjangoFilterConnectionField(
         FinancialReportNode,
-        order_by='report_date',
+        order_by='-date_time',
         filterset_class=FinancialReportFilter,
     )
-
-
-class Financials(DjangoObjectType):
-    class Meta:
-        model = credit_report.models.Financials
+    news = DjangoFilterConnectionField(
+        NewsNode,
+        order_by='-date_time',
+        filterset_class=NewsFilter,
+    )
 
 
 class CreditReportQuery(graphene.ObjectType):
     credit_reports = DjangoFilterConnectionField(
         CreditReportNode,
-        order_by='-report_dated',
+        order_by='-date_time',
         filterset_class=CreditReportFilter,
     )

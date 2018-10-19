@@ -7,7 +7,7 @@ from typing import List
 from common.management.commands._company import create_company
 from common.management.commands._creditreport import create_financial_report, create_credit_report, create_financials
 from company.models import Company
-from credit_report.models import FinancialReport
+from financial_report.models import FinancialReport
 
 REVENUE = 'Revenue'
 EBIT = 'EBIT'
