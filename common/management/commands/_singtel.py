@@ -35,13 +35,8 @@ def create_singtel_company():
         ]
 
         # singtel has one credit report
-        create_credit_report(
-            company=company,
-            probability_of_default=randint(1, 1000),
-            credit_rating='AA',
-            date_time=datetime.now(timezone.utc),
-            financial_reports=financial_reports,
-        )
+        create_credit_report(company=company, probability_of_default=randint(1, 1000), credit_rating='AA',
+                             date_time=datetime.now(timezone.utc), financial_reports=financial_reports)
 
 
 def financial_report_2014(company):
