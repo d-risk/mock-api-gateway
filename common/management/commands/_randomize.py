@@ -5,7 +5,9 @@ from random import randint, choice, uniform
 from typing import List
 
 from common.management.commands._company import create_company
-from common.management.commands._creditreport import create_financial_report, create_credit_report, create_financials
+from common.management.commands._credit_report import create_credit_report
+from common.management.commands._financial_report import create_financial_report, create_financial_data, \
+    create_financial_ratio
 from company.models import Company
 from financial_report.models import FinancialReport
 
@@ -22,7 +24,7 @@ TOTAL_DEBT = 'Total Debt'
 TOTAL_EQUITY = 'Total Equity'
 CURRENT_ASSETS = 'Current Assets'
 CURRENT_LIABILITIES = 'Current Liabilities'
-FINANCIALS: List[str] = [
+FINANCIAL_DATA: List[str] = [
     REVENUE,
     EBIT,
     EBITDA,
@@ -37,9 +39,32 @@ FINANCIALS: List[str] = [
     CURRENT_ASSETS,
     CURRENT_LIABILITIES,
 ]
-RATINGS = ['A', 'B', 'C']
+
+RATINGS = [
+    'AAA',
+    'AA',
+    'A',
+    'BBB',
+    'BB',
+    'B',
+    'CCC',
+    'CC',
+    'C',
+]
+
 NOUN_LIST_URL = 'http://www.desiquintans.com/downloads/nounlist/nounlist.txt'
 NOUN_LIST_FILENAME = 'noun_list.txt'
+
+FINANCIAL_RATIOS: List[str] = [
+    'Debt Cover = EBITDA / Interest Expense',
+    'Size = ln(Total Assets)',
+    'ROA = Profit After Tax / Total Assets',
+    'Quick Ratio = (Total Current Assets - Inventory) / Total Current Liabilities',
+    'Liabilities over Total Assets = Total Liabilities / Total Assets',
+    'ROE = Profit After Tax / Total Equity',
+    'Leverage = (Total Debt - Cash) / EBITDA',
+    'Current Ratio = Total Current Assets / Total Current Liabilities',
+]
 
 
 def random_companies(number_of_companies: int, from_year: int, to_year: int):
@@ -69,21 +94,27 @@ def random_companies(number_of_companies: int, from_year: int, to_year: int):
 
 
 def random_credit_reports(company: Company, from_year: int, to_year: int):
-    financials_reports: List[FinancialReport] = []
+    financial_reports: List[FinancialReport] = []
     for year in range(from_year, to_year + 1):
-        report_date = datetime(year=year, month=randint(1, 12), day=randint(1, 28), tzinfo=timezone.utc)
-        financials_report = create_financial_report(company=company, report_date=report_date, )
-        random_financials(financials_report=financials_report)
-        financials_reports.append(financials_report)
+        date_time = datetime(year=year, month=randint(1, 12), day=randint(1, 28), tzinfo=timezone.utc)
+        financial_report = create_financial_report(company=company, date_time=date_time, )
+        random_financial_data(financial_report=financial_report)
+        random_financial_ratio(financial_report=financial_report)
+        financial_reports.append(financial_report)
         create_credit_report(
             company=company,
-            credit_score=uniform(1, 99),
+            probability_of_default=uniform(0, 1),
             credit_rating=choice(RATINGS),
-            report_date=report_date,
-            financial_reports=financials_reports,
+            date_time=date_time,
+            financial_reports=financial_reports,
         )
 
 
-def random_financials(financials_report: FinancialReport):
-    for name in FINANCIALS:
-        create_financials(financial_report=financials_report, name=name, value=uniform(0, 999_999_999_999))
+def random_financial_data(financial_report: FinancialReport):
+    for name in FINANCIAL_DATA:
+        create_financial_data(financial_report=financial_report, name=name, value=uniform(0, 999_999_999_999))
+
+
+def random_financial_ratio(financial_report):
+    for name in FINANCIAL_RATIOS:
+        create_financial_ratio(financial_report=financial_report, name=name, value=uniform(-999_999, 999_999))

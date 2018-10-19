@@ -22,7 +22,7 @@ class CreditReportFilter(FilterSet):
             qs = self.queryset.all().order_by('-date_time')
             if self.is_bound:
                 # ensure form validation before filtering
-                self.errors()
+                self.errors
                 qs = self.filter_queryset(qs)
             self._qs = qs
         return self._qs

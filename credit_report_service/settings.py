@@ -66,9 +66,9 @@ INSTALLED_APPS: List[str] = [
     'graphene_django',
     'common',
     'company',
+    'credit_report',
     'financial_report',
     'news',
-    'credit_report',
 ]
 
 MIDDLEWARE: List[str] = [
