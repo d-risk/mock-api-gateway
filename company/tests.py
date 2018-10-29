@@ -7,19 +7,32 @@ from company.models import Company
 # Create your tests here.
 class CompanyTestCase(TestCase):
     def test_create_company(self):
+        name = 'Name'
+        industry = 'Industry'
+        description = 'Description'
+        exchange = 'Exchange'
+        country = type("", (), dict(
+            name='United States of America',
+            code='US',
+            alpha3='USA',
+            numeric=840,
+        ))()
+
         company = Company.objects.create(
-            name='Name',
-            industry='Industry',
-            description='Description',
-            exchange='Exchange',
+            name=name,
+            industry=industry,
+            description=description,
+            exchange=exchange,
             country='US',
         )
+
         self.assertEqual(Company.objects.count(), 1)
         self.assertIsNotNone(company.id)
-        self.assertEqual(company.name, 'Name')
-        self.assertEqual(company.industry, 'Industry')
-        self.assertEqual(company.description, 'Description')
-        self.assertCountry(company, 'United States of America', 'US', 'USA', 840)
+        self.assertEqual(company.name, name)
+        self.assertEqual(company.industry, industry)
+        self.assertEqual(company.description, description)
+        self.assertEqual(company.exchange, exchange)
+        self.assertCountry(company, country.name, country.code, country.alpha3, country.numeric)
 
     def test_create_company_without_name(self):
         self.assertRaises(
