@@ -4,6 +4,8 @@ from pathlib import Path
 from random import randint, choice, uniform
 from typing import List
 
+from django_countries import countries
+
 from common.management.commands._company import create_company
 from common.management.commands._credit_report import create_credit_report
 from common.management.commands._financial_report import create_financial_report, create_financial_data, \
@@ -106,6 +108,8 @@ def random_companies(number_of_companies: int, from_year: int, to_year: int):
                         'id hendrerit lorem accumsan vel. Nunc elementum tortor quam, id lacinia turpis aliquam a. '
                         'Sed vel vestibulum augue. Donec vulputate et justo vel tincidunt.',
             industry=choice(nouns),
+            exchange=f'stock {choice(nouns)} exchange',
+            country=choice(countries)
         )
         if created:
             companies.append(company, )

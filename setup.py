@@ -22,8 +22,10 @@ setup(
     description='D-Risk\'s Credit Report Service',
     long_description=_readme(),
     install_requires=[
-        'graphene',
         'django',
+        'django-countries',
+        'django-filter',
+        'graphene',
         'graphene_django',
     ],
     keywords='api graphene credit-rating risk-assessment graphql',

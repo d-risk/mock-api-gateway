@@ -24,6 +24,8 @@ def create_singtel_company():
                     'businesses. The company also operates a venture capital fund that focuses its investments on '
                     'technologies and solutions. Singapore Telecommunications Limited is headquartered in Singapore.',
         industry='Telecommunications',
+        exchange='Singapore Stock Exchange',
+        country='SG',
     )
     if created:
         # singtel has 4 financial reports
