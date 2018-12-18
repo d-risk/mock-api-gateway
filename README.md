@@ -12,7 +12,7 @@ These instructions should get you started on this service.
 Here are the requirements that you need to have before starting on this project.
 
 * [Git]
-* [Docker] and/or
+* [Docker]
 * [Python] 3.7 or higher
 
 ### Installing
