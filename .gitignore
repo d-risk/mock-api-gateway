@@ -104,3 +104,7 @@ ENV/
 # PyCharm / IntelliJ
 .idea/
 *.iml
+
+### Application specific
+noun_list.txt
+schema.json
