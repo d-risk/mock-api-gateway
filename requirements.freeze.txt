@@ -1,4 +1,4 @@
-aniso8601==4.0.1
+aniso8601==4.1.0
 certifi==2018.11.29
 Django==2.1.7
 django-countries==5.3.3
