@@ -62,7 +62,26 @@ The port is the port that is mapped to the Docker container.
 ### Using Python
 
 The Python approach is meant for you to run this service on your local machine.
-To start, first install the dependencies as indicated below.
+It is recommended to create a virtual environment to install the required packages.
+Create a virtual environment as indicated below.
+
+```commandline
+python -m venv .venv
+```
+
+This will create the `.venv` directory for the virtual environment.
+To switch to the virtual environment, follow the commandline below.
+
+On Windows:
+```commandline
+.venv\Scripts\activate
+```
+On Unix or MacOS:
+```commandline
+source .venv/bin/activate
+```
+
+Once in the virtual environment, install the dependencies as indicated below.
 
 ```commandline
 pip install -r requirements.freeze.txt
