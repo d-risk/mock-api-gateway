@@ -11,7 +11,7 @@ from news.models import News as NewsModel
 
 
 class NewsFilter(django_filters.FilterSet):
-    company_id = django_filters.UUIDFilter(required=True, label='The UUID of the company')
+    company_id = django_filters.UUIDFilter(required=True, label='The UUID of the company', )
     year = django_filters.NumberFilter(
         field_name='date_time',
         lookup_expr='year',
@@ -34,16 +34,16 @@ class NewsFilter(django_filters.FilterSet):
 
     @property
     def qs(self):
-        return super(NewsFilter, self).qs.order_by('-date_time')
+        return super(NewsFilter, self).qs.order_by('-date_time', )
 
 
 class News(DjangoObjectType):
-    news_id = graphene.ID(description='The ID of the news snippet')
-    company_id = graphene.UUID(description='The company, as identified by the UUID, of the news snippet')
-    title = graphene.String(description='The title of the news snippet')
-    date_time = graphene.DateTime(description='The date and time of the news snippet')
-    snippet = graphene.String(description='A snippet of the news')
-    url = graphene.String(description='The URL where the news originated')
+    news_id = graphene.ID(description='The ID of the news snippet', )
+    company_id = graphene.UUID(description='The company, as identified by the UUID, of the news snippet', )
+    title = graphene.String(description='The title of the news snippet', )
+    date_time = graphene.DateTime(description='The date and time of the news snippet', )
+    snippet = graphene.String(description='A snippet of the news', )
+    url = graphene.String(description='The URL where the news originated', )
 
     class Meta:
         model = NewsModel
@@ -51,7 +51,7 @@ class News(DjangoObjectType):
 
 
 class NewsNode(News):
-    id = relay.GlobalID(description='A global ID for reactive paging purposes')
+    id = relay.GlobalID(description='A global ID for reactive paging purposes', )
 
     class Meta:
         model = NewsModel
@@ -63,11 +63,11 @@ class NewsQuery(graphene.ObjectType):
     news = graphene.Field(
         type=News,
         description='Find a news snippet using an ID',
-        news_id=graphene.ID(required=True, description='The ID of a news snippet'),
+        news_id=graphene.ID(required=True, description='The ID of a news snippet', ),
     )
     news_by_company = DjangoFilterConnectionField(
         type=NewsNode,
-        description='Search for news snippets of a company (by the given UUID) that is sorted by date and time',
+        description='Search for news snippets of a company (by the given UUID) that is ordered by date and time',
         filterset_class=NewsFilter,
     )
 
@@ -75,7 +75,7 @@ class NewsQuery(graphene.ObjectType):
             self,
             info: ResolveInfo,
             news_id: graphene.ID,
-            **kwargs
+            **kwargs,
     ) -> NewsModel:
         logging.debug(f'self={self}, info={info}, news_id={news_id} kwargs={kwargs}')
-        return NewsModel.objects.get(news_id=news_id)
+        return NewsModel.objects.get(news_id=news_id, )
