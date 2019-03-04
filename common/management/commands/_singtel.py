@@ -60,7 +60,7 @@ def create_singtel_company():
         )
         create_news(
             company=company,
-            title='Singtel News 2',
+            title='Singtel News 3',
             date_time=datetime(year=2017, month=12, day=12, tzinfo=timezone.utc, ),
             snippet='Snippet 3',
             url='https://singtel.com/',
