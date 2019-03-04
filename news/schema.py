@@ -16,11 +16,11 @@ class NewsFilter(FilterSet):
         fields = ['date_time', ]
 
     year = NumberFilter(field_name='date_time', lookup_expr='year',
-                        description='Filter out news snippets that does not match the year')
+                        label='Filter out news snippets that does not match the year',)
     from_year = NumberFilter(field_name='date_time', lookup_expr='year__gte',
-                             description='Filter out news snippets that are older than the year')
+                             label='Filter out news snippets that are older than the year',)
     to_year = NumberFilter(field_name='date_time', lookup_expr='year__lte',
-                           description='Filter out news snippets that newer than the year')
+                           label='Filter out news snippets that newer than the year',)
 
 
 class News(DjangoObjectType):
