@@ -4,6 +4,7 @@ from random import randint
 from common.management.commands._company import create_company
 from common.management.commands._credit_report import create_credit_report
 from common.management.commands._financial_report import create_financial_report, create_financial_data
+from common.management.commands._news import create_news
 from common.management.commands._randomize import REVENUE, EBIT, EBITDA, INTEREST_EXPENSE, PROFIT_BEFORE_TAX, \
     PROFIT_AFTER_TAX, CASH_EQUIVALENTS, TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_DEBT, TOTAL_EQUITY, CURRENT_ASSETS, \
     CURRENT_LIABILITIES
@@ -29,19 +30,44 @@ def create_singtel_company():
     )
     if created:
         # singtel has 4 financial reports
-        financial_reports = [
-            financial_report_2014(company),
-            financial_report_2015(company),
-            financial_report_2016(company),
-            financial_report_2017(company),
-        ]
+        financial_report_2014(company),
+        financial_report_2015(company),
+        financial_report_2016(company),
+        financial_report_2017(company),
 
         # singtel has one credit report
-        create_credit_report(company=company, probability_of_default=randint(1, 1000), credit_rating='AA',
-                             date_time=datetime.now(timezone.utc), financial_reports=financial_reports)
+        create_credit_report(
+            company=company,
+            probability_of_default=randint(1, 1000),
+            credit_rating='AA',
+            date_time=datetime.now(timezone.utc),
+        )
+
+        # singtel has some randomly generated news
+        create_news(
+            company=company,
+            title='Singtel News 1',
+            date_time=datetime(year=2017, month=1, day=1, tzinfo=timezone.utc, ),
+            snippet='Snippet 1',
+            url='https://singtel.com/',
+        )
+        create_news(
+            company=company,
+            title='Singtel News 2',
+            date_time=datetime(year=2017, month=6, day=6, tzinfo=timezone.utc, ),
+            snippet='Snippet 2',
+            url='https://singtel.com/',
+        )
+        create_news(
+            company=company,
+            title='Singtel News 2',
+            date_time=datetime(year=2017, month=12, day=12, tzinfo=timezone.utc, ),
+            snippet='Snippet 3',
+            url='https://singtel.com/',
+        )
 
 
-def financial_report_2014(company):
+def financial_report_2014(company: Company):
     # financial report 1
     financial_report = create_financial_report(
         company=company,
@@ -63,7 +89,7 @@ def financial_report_2014(company):
     return financial_report
 
 
-def financial_report_2015(company):
+def financial_report_2015(company: Company):
     # financial report 2
     financial_report = create_financial_report(
         company=company,
@@ -85,7 +111,7 @@ def financial_report_2015(company):
     return financial_report
 
 
-def financial_report_2016(company):
+def financial_report_2016(company: Company):
     # financial report 3
     financial_report = create_financial_report(
         company=company,
