@@ -1,7 +1,7 @@
 import logging
 
+import django_filters
 import graphene
-from django_filters import FilterSet, NumberFilter
 from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
@@ -10,17 +10,31 @@ from graphql import ResolveInfo
 from news.models import News as NewsModel
 
 
-class NewsFilter(FilterSet):
+class NewsFilter(django_filters.FilterSet):
+    company_id = django_filters.UUIDFilter(required=True, label='The UUID of the company')
+    year = django_filters.NumberFilter(
+        field_name='date_time',
+        lookup_expr='year',
+        label='Filter out news snippets that does not match the year',
+    )
+    from_year = django_filters.NumberFilter(
+        field_name='date_time',
+        lookup_expr='year__gte',
+        label='Filter out news snippets that are older than the year',
+    )
+    to_year = django_filters.NumberFilter(
+        field_name='date_time',
+        lookup_expr='year__lte',
+        label='Filter out news snippets that newer than the year',
+    )
+
     class Meta:
         model = NewsModel
-        fields = ['date_time', ]
+        fields = ['company_id', ]
 
-    year = NumberFilter(field_name='date_time', lookup_expr='year',
-                        label='Filter out news snippets that does not match the year',)
-    from_year = NumberFilter(field_name='date_time', lookup_expr='year__gte',
-                             label='Filter out news snippets that are older than the year',)
-    to_year = NumberFilter(field_name='date_time', lookup_expr='year__lte',
-                           label='Filter out news snippets that newer than the year',)
+    @property
+    def qs(self):
+        return super(NewsFilter, self).qs.order_by('-date_time')
 
 
 class News(DjangoObjectType):
@@ -41,7 +55,7 @@ class NewsNode(News):
 
     class Meta:
         model = NewsModel
-        interfaces = [graphene.Node, ]
+        interfaces = (relay.Node,)
         description = 'A node that encapsulates the news snippet to support data-driven React applications'
 
 
@@ -49,16 +63,19 @@ class NewsQuery(graphene.ObjectType):
     news = graphene.Field(
         type=News,
         description='Find a news snippet using an ID',
-        news_id=graphene.ID(description='The ID of a news snippet'),
+        news_id=graphene.ID(required=True, description='The ID of a news snippet'),
     )
     news_by_company = DjangoFilterConnectionField(
         type=NewsNode,
-        order_by='-date_time',
-        filterset_class=NewsFilter,
         description='Search for news snippets of a company (by the given UUID) that is sorted by date and time',
-        company_id=graphene.UUID(description='The UUID of the company'),
+        filterset_class=NewsFilter,
     )
 
-    def resolve_news(self, info: ResolveInfo, news_id=graphene.ID(description='description'), **kwargs):
-        logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
-        NewsModel.objects.get(news_id=news_id)
+    def resolve_news(
+            self,
+            info: ResolveInfo,
+            news_id: graphene.ID,
+            **kwargs
+    ) -> NewsModel:
+        logging.debug(f'self={self}, info={info}, news_id={news_id} kwargs={kwargs}')
+        return NewsModel.objects.get(news_id=news_id)
