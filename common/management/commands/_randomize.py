@@ -159,3 +159,5 @@ def random_financial_data(financial_report: FinancialReport):
 def random_financial_ratio(financial_report):
     for name in FINANCIAL_RATIOS:
         create_financial_ratio(financial_report=financial_report, name=name, value=uniform(-999_999, 999_999))
+
+
