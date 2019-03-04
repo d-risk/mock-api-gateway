@@ -14,13 +14,13 @@ def create_news(
         url: str,
 ) -> News:
     news = News.objects.create(
-        company_id=company.id,
+        company_id=company.company_id,
         title=title,
         date_time=date_time,
         snippet=snippet,
         url=url,
     )
-    print(f'        + News \'{news.id}\' ({news.date_time}) created', )
+    print(f'        + News \'{news.news_id}\' ({news.date_time}) created', )
     return news
 
 
