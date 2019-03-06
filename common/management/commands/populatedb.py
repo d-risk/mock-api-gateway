@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from common.management.commands._randomize import random_companies
+from common.management.commands._randomize import create_companies
 from common.management.commands._singtel import create_singtel_company
 
 COMPANIES = 'companies'
@@ -19,6 +19,6 @@ class Command(BaseCommand):
         companies: int = options[COMPANIES]
         # reports: int = options[REPORTS]
         if companies:
-            random_companies(companies, 2010, 2018)
+            create_companies(companies, 2010, 2018)
         if options[SINGTEL]:
             create_singtel_company()
