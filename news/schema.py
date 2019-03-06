@@ -51,7 +51,7 @@ class News(DjangoObjectType):
 
 
 class NewsNode(News):
-    id = relay.GlobalID(description='A global ID for reactive paging purposes', )
+    id = relay.GlobalID(description='A global ID that relay uses for reactive paging purposes', )
 
     class Meta:
         model = NewsModel
