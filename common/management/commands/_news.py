@@ -24,7 +24,7 @@ def create_news(
     return news
 
 
-def random_news(nouns: List[str], company: Company, date_time: datetime) -> News:
+def random_news(nouns: List[str], company: Company, date_time: datetime, ) -> News:
     news = create_news(
         company=company,
         title=choice(nouns),
@@ -37,6 +37,6 @@ def random_news(nouns: List[str], company: Company, date_time: datetime) -> News
                 'nascetur ridiculus mus. Pellentesque lacinia nulla non erat blandit ultrices. Aenean '
                 'pharetra a eros vel varius. Quisque vitae ipsum sed neque tempor maximus. Vestibulum quis '
                 'leo fringilla, cursus tortor ac, finibus arcu.',
-        url=f'https://example.com/{choice(nouns)}-{choice(nouns)}-{choice(nouns)}-{choice(nouns)}'
+        url=f'https://example.com/{choice(nouns)}-{choice(nouns)}-{choice(nouns)}-{choice(nouns)}',
     )
     return news
