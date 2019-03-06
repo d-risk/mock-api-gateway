@@ -1,34 +1,66 @@
-from django_filters import FilterSet
-from graphene.relay import Node
-from graphene.types import ObjectType, UUID
-from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
+import logging
 
-from company.models import Company
+import django_filters
+import graphene
+import graphene_django
+import graphql
+from graphene import relay
+from graphene_django import filter
+
+from company.models import Company as CompanyModel
 
 
 # Annex F - Company Data Service
 # GraphQL data model
-class CompanyFilter(FilterSet):
-    class Meta:
-        model = Company
-        fields = {
-            'name': ['icontains', ],
-            'industry': ['icontains', ],
-        }
-
-
-class CompanyNode(DjangoObjectType):
-    company_id = UUID(description="The UUID of the company.")
+class CompanyFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(required=True, lookup_expr='icontains')
 
     class Meta:
-        model = Company
-        interfaces = [Node, ]
-
-    def resolve_company_id(self, info, **args) -> UUID:
-        return self.id
+        model = CompanyModel
+        fields = ['name', ]
 
 
-class CompanyQuery(ObjectType):
-    company = Node.Field(CompanyNode, )
-    companies = DjangoFilterConnectionField(CompanyNode, filterset_class=CompanyFilter)
+class Company(graphene_django.DjangoObjectType):
+    company_id = graphene.UUID(description='The UUID of the company', )
+    name = graphene.String(description='The name of the company', )
+    industry = graphene.String(description='The industry in which the company operates', )
+    description = graphene.String(description='A description of the company', )
+    exchange = graphene.String(description='The stock exchange in which the company is listed', )
+
+    # TODO figure out the proper type for country
+    # country = graphene.Enum(description='The country in which the company operates',)
+
+    class Meta:
+        model = CompanyModel
+        description = 'General information about a company'
+
+
+class CompanyNode(Company):
+    id = relay.GlobalID(description='A global ID for reactive paging purposes', )
+
+    class Meta:
+        model = CompanyModel
+        interfaces = (relay.Node,)
+        description = 'A node that encapsulates the company to support data-driven React applications'
+
+
+class CompanyQuery(graphene.ObjectType):
+    company = graphene.Field(
+        type=Company,
+        description='Retrieve general information about a company using a UUID',
+        company_id=graphene.UUID(required=True, description='The UUID of a company', ),
+    )
+    companies_by_name = filter.DjangoFilterConnectionField(
+        type=CompanyNode,
+        description='Search for companies that contains the given name',
+        filterset_class=CompanyFilter,
+    )
+
+    def resolve_company(
+            self,
+            info: graphql.ResolveInfo,
+            company_id: graphene.UUID,
+            **kwargs,
+    ) -> Company:
+        logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
+        return CompanyModel.objects.get(company_id=company_id, )

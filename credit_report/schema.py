@@ -1,53 +1,67 @@
-import graphene
-from django_filters import FilterSet
-from graphene.relay import Node
-from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
+import logging
 
-from credit_report.models import CreditReport
-from financial_report.schema import FinancialReportFilter, FinancialReportNode
-from news.schema import NewsNode, NewsFilter
+import django_filters
+import graphene
+import graphene_django
+import graphql
+from graphene import relay
+from graphene_django import filter
+
+from credit_report.models import CreditReport as CreditReportModel
 
 
 # Annex G - Credit Report Service
 # GraphQL data model
-class CreditReportFilter(FilterSet):
+class CreditReportFilter(django_filters.FilterSet):
+    company_id = django_filters.UUIDFilter(required=True, label='The UUID of the company', )
+    year = django_filters.NumberFilter(
+        field_name='date_time',
+        lookup_expr='year',
+        label='Filter out news snippets that does not match the year',
+    )
+
     class Meta:
-        model = CreditReport
+        model = CreditReportModel
         fields = ['company_id', ]
 
     @property
-    def qs(self: FilterSet):
-        if not hasattr(self, '_qs'):
-            qs = self.queryset.all().order_by('-date_time')
-            if self.is_bound:
-                # ensure form validation before filtering
-                self.errors
-                qs = self.filter_queryset(qs)
-            self._qs = qs
-        return self._qs
+    def qs(self):
+        return super(CreditReportFilter, self).qs.order_by('-date_time', )
 
 
-class CreditReportNode(DjangoObjectType):
+class CreditReport(graphene_django.DjangoObjectType):
     class Meta:
-        model = CreditReport
-        interfaces = [Node, ]
+        model = CreditReportModel
+        description = 'A credit report'
 
-    financial_reports = DjangoFilterConnectionField(
-        FinancialReportNode,
-        order_by='-date_time',
-        filterset_class=FinancialReportFilter,
-    )
-    news = DjangoFilterConnectionField(
-        NewsNode,
-        order_by='-date_time',
-        filterset_class=NewsFilter,
-    )
+
+class CreditReportNode(CreditReport):
+    id = relay.GlobalID(description='A global ID that relay uses for reactive paging purposes', )
+
+    class Meta:
+        model = CreditReportModel
+        interfaces = (relay.Node,)
+        description = 'A node that encapsulates the credit report to support data-driven React applications'
 
 
 class CreditReportQuery(graphene.ObjectType):
-    credit_reports = DjangoFilterConnectionField(
-        CreditReportNode,
-        order_by='-date_time',
+    credit_report = graphene.Field(
+        type=CreditReport,
+        description='Find a credit report using an ID',
+        report_id=graphene.ID(required=True, description='The ID of the credit report', )
+    )
+    credit_reports_by_company = filter.DjangoFilterConnectionField(
+        type=CreditReportNode,
+        description='Search for a list of credit report of a company (by the given UUID) that is ordered by date and '
+                    'time',
         filterset_class=CreditReportFilter,
     )
+
+    def resolve_credit_report(
+            self,
+            info: graphql.ResolveInfo,
+            report_id: graphene.ID,
+            **kwargs,
+    ) -> CreditReportModel:
+        logging.debug(f'self={self}, info={info}, news_id={report_id} kwargs={kwargs}')
+        return CreditReportModel.objects.get(report_id=report_id, )

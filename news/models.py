@@ -1,14 +1,16 @@
-from django.db.models import Model, TextField, URLField, DateTimeField, UUIDField
+from django.db import models
 from django.utils.timezone import now
 
 
 # Create your models here.
-class News(Model):
-    company_id = UUIDField(db_index=True, )
-    title = TextField(db_index=True, )
-    date_time = DateTimeField(default=now, )
-    snippet = TextField()
-    url = URLField()
+class News(models.Model):
+    news_id = models.AutoField(primary_key=True, )
+    company_id = models.UUIDField(db_index=True, editable=False, )
+    title = models.TextField(db_index=True, editable=False, )
+    date_time = models.DateTimeField(db_index=True, default=now, editable=False, )
+    snippet = models.TextField(editable=False, )
+    url = models.URLField(editable=False, )
 
     class Meta:
         db_table = 'app_news'
+        ordering = ['-date_time', ]
