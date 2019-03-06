@@ -1,30 +1,43 @@
-from django.db.models import Model, UUIDField, DateTimeField, CharField, ForeignKey, PROTECT, DecimalField
+from django.db import models
+from django.db.models import Model, PROTECT
 from django.utils.timezone import now
 
 
 # Create your models here.
-class FinancialReport(Model):
-    company_id = UUIDField(db_index=True)
-    date_time = DateTimeField(default=now, )
-    currency = CharField(max_length=5, )
+class FinancialReport(models.Model):
+    company_id = models.UUIDField(db_index=True, editable=False, )
+    date_time = models.DateTimeField(db_index=True, default=now, editable=False, )
+    currency = models.CharField(max_length=5, editable=False, )
 
     class Meta:
         db_table = 'app_financial_reports'
+        ordering = ['-date_time', ]
 
 
-class FinancialData(Model):
-    financial_report = ForeignKey(FinancialReport, on_delete=PROTECT, related_name='financial_data', )
-    name = CharField(max_length=50, )
-    value = DecimalField(decimal_places=9, max_digits=99, )
+class FinancialData(models.Model):
+    financial_report = models.ForeignKey(
+        FinancialReport,
+        on_delete=PROTECT,
+        related_name='financial_data',
+        editable=False,
+    )
+    name = models.CharField(max_length=50, editable=False, )
+    value = models.DecimalField(decimal_places=9, max_digits=99, editable=False, )
 
     class Meta:
         db_table = 'app_financial_data'
 
 
-class FinancialRatio(Model):
-    financial_report = ForeignKey(FinancialReport, on_delete=PROTECT, related_name='financial_ratios', )
-    name = CharField(max_length=50, )
-    value = DecimalField(decimal_places=9, max_digits=99, )
+class FinancialRatio(models.Model):
+    financial_report = models.ForeignKey(
+        FinancialReport,
+        on_delete=PROTECT,
+        related_name='financial_ratios',
+        editable=False,
+    )
+    name = models.CharField(max_length=50, editable=False, )
+    value = models.DecimalField(decimal_places=9, max_digits=99, editable=False, )
+    formula = models.TextField(editable=False, )
 
     class Meta:
         db_table = 'app_financial_ratios'
