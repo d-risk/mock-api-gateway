@@ -2,11 +2,10 @@ import logging
 
 import django_filters
 import graphene
+import graphene_django
+import graphql
 from graphene import relay
-from graphene.types import ObjectType
-from graphene_django import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
-from graphql import ResolveInfo
+from graphene_django import filter
 
 from company.models import Company as CompanyModel
 
@@ -21,7 +20,7 @@ class CompanyFilter(django_filters.FilterSet):
         fields = ['name', ]
 
 
-class Company(DjangoObjectType):
+class Company(graphene_django.DjangoObjectType):
     company_id = graphene.UUID(description='The UUID of the company', )
     name = graphene.String(description='The name of the company', )
     industry = graphene.String(description='The industry in which the company operates', )
@@ -45,18 +44,23 @@ class CompanyNode(Company):
         description = 'A node that encapsulates the company to support data-driven React applications'
 
 
-class CompanyQuery(ObjectType):
+class CompanyQuery(graphene.ObjectType):
     company = graphene.Field(
         type=Company,
         description='Retrieve general information about a company using a UUID',
         company_id=graphene.UUID(required=True, description='The UUID of a company', ),
     )
-    companies = DjangoFilterConnectionField(
+    companies_by_name = filter.DjangoFilterConnectionField(
         type=CompanyNode,
         description='Search for companies that contains the given name',
         filterset_class=CompanyFilter,
     )
 
-    def resolve_company(self, info: ResolveInfo, company_id: graphene.UUID, **kwargs, ) -> Company:
+    def resolve_company(
+            self,
+            info: graphql.ResolveInfo,
+            company_id: graphene.UUID,
+            **kwargs,
+    ) -> Company:
         logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
         return CompanyModel.objects.get(company_id=company_id, )
