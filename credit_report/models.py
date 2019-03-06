@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Model
 from django.utils.timezone import now
 
 from financial_report.models import FinancialReport
@@ -18,3 +17,4 @@ class CreditReport(models.Model):
 
     class Meta:
         db_table = 'app_credit_reports'
+        ordering = ['-date_time', ]
