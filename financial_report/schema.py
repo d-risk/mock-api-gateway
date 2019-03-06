@@ -91,7 +91,7 @@ class FinancialReportQuery(graphene.ObjectType):
         description='Find a financial report using an ID',
         report_id=graphene.ID(required=True, description='The ID of a financial report', ),
     )
-    financial_reports = filter.DjangoFilterConnectionField(
+    financial_reports_by_company = filter.DjangoFilterConnectionField(
         type=FinancialReportNode,
         description='Search for a list of financial report of a company (by the given UUID) that is ordered by date '
                     'and time',
