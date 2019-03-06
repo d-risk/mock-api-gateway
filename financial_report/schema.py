@@ -46,6 +46,7 @@ class FinancialData(graphene_django.DjangoObjectType):
 
     class Meta:
         model = FinancialDataModel
+        exclude_fields = ('financial_report',)
         description = 'A financial data'
 
 
@@ -57,6 +58,7 @@ class FinancialRatio(graphene_django.DjangoObjectType):
 
     class Meta:
         model = FinancialRatioModel
+        exclude_fields = ('financial_report',)
         description = 'A financial ratio'
 
 
