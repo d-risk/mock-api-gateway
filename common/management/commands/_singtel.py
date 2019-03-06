@@ -65,6 +65,13 @@ def create_singtel_company():
             snippet='Snippet 3',
             url='https://singtel.com/',
         )
+        create_news(
+            company=company,
+            title='Singtel News 4',
+            date_time=datetime(year=2016, month=1, day=1, tzinfo=timezone.utc, ),
+            snippet='Snippet 4',
+            url='https://singtel.com/',
+        )
 
 
 def financial_report_2014(company: Company):
