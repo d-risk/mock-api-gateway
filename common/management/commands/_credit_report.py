@@ -43,7 +43,7 @@ def create_credit_report(
         credit_rating=credit_rating,
         date_time=date_time,
     )
-    print(f'        + Credit Report \'{credit_report.id}\' ({credit_report.date_time}) created', )
+    print(f'        + Credit Report \'{credit_report.report_id}\' ({credit_report.date_time}) created', )
     return credit_report
 
 
