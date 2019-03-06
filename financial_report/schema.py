@@ -1,4 +1,5 @@
 import logging
+from typing import List
 
 import django_filters
 import graphene
@@ -76,6 +77,22 @@ class FinancialReport(graphene_django.DjangoObjectType):
     class Meta:
         model = FinancialReportModel
         description = 'A financial report'
+
+    def resolve_financial_data(
+            self: FinancialReportModel,
+            info: graphql.ResolveInfo,
+            **kwargs,
+    ) -> List[FinancialDataModel]:
+        logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
+        return self.financial_data.all()
+
+    def resolve_financial_ratios(
+            self: FinancialReportModel,
+            info: graphql.ResolveInfo,
+            **kwargs,
+    ) -> List[FinancialRatioModel]:
+        logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
+        return self.financial_ratios.all()
 
 
 class FinancialReportNode(FinancialReport):
