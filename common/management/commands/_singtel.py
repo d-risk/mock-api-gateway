@@ -3,11 +3,11 @@ from random import randint
 
 from common.management.commands._company import create_company
 from common.management.commands._credit_report import create_credit_report
-from common.management.commands._financial_report import create_financial_report, create_financial_data
-from common.management.commands._news import create_news
-from common.management.commands._randomize import REVENUE, EBIT, EBITDA, INTEREST_EXPENSE, PROFIT_BEFORE_TAX, \
+from common.management.commands._financial_report import REVENUE, EBIT, EBITDA, INTEREST_EXPENSE, PROFIT_BEFORE_TAX, \
     PROFIT_AFTER_TAX, CASH_EQUIVALENTS, TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_DEBT, TOTAL_EQUITY, CURRENT_ASSETS, \
     CURRENT_LIABILITIES
+from common.management.commands._financial_report import create_financial_report, create_financial_data
+from common.management.commands._news import create_news
 from company.models import Company
 
 
