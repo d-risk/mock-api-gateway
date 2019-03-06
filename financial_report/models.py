@@ -5,6 +5,7 @@ from django.utils.timezone import now
 
 # Create your models here.
 class FinancialReport(models.Model):
+    report_id = models.AutoField(primary_key=True, )
     company_id = models.UUIDField(db_index=True, editable=False, )
     date_time = models.DateTimeField(db_index=True, default=now, editable=False, )
     currency = models.CharField(max_length=5, editable=False, )
