@@ -13,3 +13,4 @@ class News(models.Model):
 
     class Meta:
         db_table = 'app_news'
+        ordering = ['-date_time', ]
