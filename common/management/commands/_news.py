@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from random import choice
 from typing import List
 
@@ -27,7 +27,7 @@ def create_news(
 def random_news(nouns: List[str], company: Company, date_time: datetime, ) -> News:
     news = create_news(
         company=company,
-        title=choice(nouns),
+        title=f'{choice(nouns)} {choice(nouns)} {choice(nouns)}',
         date_time=date_time,
         snippet='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere massa et ligula '
                 'semper, sed efficitur felis tincidunt. Etiam pellentesque dui vel feugiat porta. Nullam '
@@ -40,3 +40,13 @@ def random_news(nouns: List[str], company: Company, date_time: datetime, ) -> Ne
         url=f'https://example.com/{choice(nouns)}-{choice(nouns)}-{choice(nouns)}-{choice(nouns)}',
     )
     return news
+
+
+def random_news_list(nouns: List[str], company: Company, from_year: int, to_year: int) -> List[News]:
+    news_lists: List[News] = []
+    for year in range(from_year, to_year + 1):
+        for x in [1, 6, 12, ]:
+            date_time = datetime(year=year, month=x, day=x, tzinfo=timezone.utc, )
+            news = random_news(nouns=nouns, company=company, date_time=date_time, )
+            news_lists.append(news, )
+    return news_lists
