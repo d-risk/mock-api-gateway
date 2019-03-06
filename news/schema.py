@@ -38,12 +38,15 @@ class NewsFilter(django_filters.FilterSet):
 
 
 class News(DjangoObjectType):
-    news_id = graphene.ID(description='The ID of the news snippet', )
-    company_id = graphene.UUID(description='The company, as identified by the UUID, of the news snippet', )
-    title = graphene.String(description='The title of the news snippet', )
-    date_time = graphene.DateTime(description='The date and time of the news snippet', )
-    snippet = graphene.String(description='A snippet of the news', )
-    url = graphene.String(description='The URL where the news originated', )
+    news_id = graphene.ID(description='The ID of the news snippet', required=True, )
+    company_id = graphene.UUID(
+        description='The company, as identified by the UUID, of the news snippet',
+        required=True,
+    )
+    title = graphene.String(description='The title of the news snippet', required=True, )
+    date_time = graphene.DateTime(description='The date and time of the news snippet', required=True, )
+    snippet = graphene.String(description='A snippet of the news', required=True, )
+    url = graphene.String(description='The URL where the news originated', required=True, )
 
     class Meta:
         model = NewsModel
