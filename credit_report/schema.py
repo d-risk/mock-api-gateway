@@ -35,8 +35,8 @@ class CreditReport(graphene_django.DjangoObjectType):
         description='The company, as identified by the UUID, of the credit report',
         required=True,
     )
-    probabilityOfDefault = graphene.Float(description='The probability of default of the company', required=True, )
-    creditRating = graphene.String(description='The credit rating of the company', required=True, )
+    probability_of_default = graphene.Float(description='The probability of default of the company', required=True, )
+    credit_rating = graphene.String(description='The credit rating of the company', required=True, )
     date_time = graphene.DateTime(description='The date and time of the credit report', required=True, )
 
     class Meta:
