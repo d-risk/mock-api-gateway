@@ -70,6 +70,6 @@ class CreditReportQuery(graphene.ObjectType):
             info: graphql.ResolveInfo,
             report_id: graphene.ID,
             **kwargs,
-    ) -> CreditReportModel:
+    ) -> CreditReport:
         logging.debug(f'self={self}, info={info}, report_id={report_id} kwargs={kwargs}')
         return CreditReportModel.objects.get(report_id=report_id, )
