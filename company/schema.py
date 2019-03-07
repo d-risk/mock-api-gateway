@@ -21,6 +21,7 @@ class CompanyFilter(django_filters.FilterSet):
 
 
 class Company(graphene_django.DjangoObjectType):
+    id = relay.GlobalID(description='A global ID for reactive paging purposes', )
     company_id = graphene.UUID(description='The UUID of the company', )
     name = graphene.String(description='The name of the company', )
     industry = graphene.String(description='The industry in which the company operates', )
@@ -32,16 +33,8 @@ class Company(graphene_django.DjangoObjectType):
 
     class Meta:
         model = CompanyModel
-        description = 'General information about a company'
-
-
-class CompanyNode(Company):
-    id = relay.GlobalID(description='A global ID for reactive paging purposes', )
-
-    class Meta:
-        model = CompanyModel
         interfaces = (relay.Node,)
-        description = 'A node that encapsulates the company to support data-driven React applications'
+        description = 'General information about a company'
 
 
 class CompanyQuery(graphene.ObjectType):
@@ -51,7 +44,7 @@ class CompanyQuery(graphene.ObjectType):
         company_id=graphene.UUID(required=True, description='The UUID of a company', ),
     )
     companies_by_name = filter.DjangoFilterConnectionField(
-        type=CompanyNode,
+        type=Company,
         description='Search for companies that contains the given name',
         filterset_class=CompanyFilter,
     )
