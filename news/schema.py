@@ -72,6 +72,6 @@ class NewsQuery(graphene.ObjectType):
             info: ResolveInfo,
             news_id: graphene.ID,
             **kwargs,
-    ) -> NewsModel:
+    ) -> News:
         logging.debug(f'self={self}, info={info}, news_id={news_id} kwargs={kwargs}')
         return NewsModel.objects.get(news_id=news_id, )
