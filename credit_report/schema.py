@@ -65,6 +65,12 @@ class CreditReportQuery(graphene.ObjectType):
                     'time',
         filterset_class=CreditReportFilter,
     )
+    custom_credit_report = graphene.Field(
+        type=CreditReport,
+        description='Get a custom credit report for a company using the average of the past number of years',
+        company_id=graphene.UUID(description='The UUID of the company', required=True, ),
+        years=graphene.Int(description='Use the average of the past number of years', required=True, ),
+    )
 
     def resolve_credit_report(
             self,
@@ -72,5 +78,5 @@ class CreditReportQuery(graphene.ObjectType):
             report_id: graphene.ID,
             **kwargs,
     ) -> CreditReportModel:
-        logging.debug(f'self={self}, info={info}, news_id={report_id} kwargs={kwargs}')
+        logging.debug(f'self={self}, info={info}, report_id={report_id} kwargs={kwargs}')
         return CreditReportModel.objects.get(report_id=report_id, )
