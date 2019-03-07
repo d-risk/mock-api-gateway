@@ -64,6 +64,7 @@ class FinancialRatio(graphene_django.DjangoObjectType):
 
 
 class FinancialReport(graphene_django.DjangoObjectType):
+    id = relay.GlobalID(description='A global ID that relay uses for reactive paging purposes', )
     report_id = graphene.ID(description='The ID of the financial report', required=True, )
     company_id = graphene.UUID(
         description='The company, as identified by the UUID, of the financial report',
@@ -84,6 +85,7 @@ class FinancialReport(graphene_django.DjangoObjectType):
 
     class Meta:
         model = FinancialReportModel
+        interfaces = (relay.Node,)
         description = 'A financial report'
 
     def resolve_financial_data(
@@ -103,15 +105,6 @@ class FinancialReport(graphene_django.DjangoObjectType):
         return self.financial_ratios.all()
 
 
-class FinancialReportNode(FinancialReport):
-    id = relay.GlobalID(description='A global ID that relay uses for reactive paging purposes', )
-
-    class Meta:
-        model = FinancialReportModel
-        interfaces = (relay.Node,)
-        description = 'A node that encapsulates the financial report to support data-driven React applications'
-
-
 class FinancialReportQuery(graphene.ObjectType):
     financial_report = graphene.Field(
         type=FinancialReport,
@@ -119,7 +112,7 @@ class FinancialReportQuery(graphene.ObjectType):
         report_id=graphene.ID(required=True, description='The ID of a financial report', ),
     )
     financial_reports_by_company = filter.DjangoFilterConnectionField(
-        type=FinancialReportNode,
+        type=FinancialReport,
         description='Search for a list of financial report of a company (by the given UUID) that is ordered by date '
                     'and time',
         filterset_class=FinancialReportFilter,
