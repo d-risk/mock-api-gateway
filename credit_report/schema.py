@@ -30,6 +30,15 @@ class CreditReportFilter(django_filters.FilterSet):
 
 
 class CreditReport(graphene_django.DjangoObjectType):
+    report_id = graphene.ID(description='The ID of the credit report', required=True, )
+    company_id = graphene.UUID(
+        description='The company, as identified by the UUID, of the credit report',
+        required=True,
+    )
+    probabilityOfDefault = graphene.Float(description='The probability of default of the company', required=True, )
+    creditRating = graphene.String(description='The credit rating of the company', required=True, )
+    date_time = graphene.DateTime(description='The date and time of the credit report', required=True, )
+
     class Meta:
         model = CreditReportModel
         description = 'A credit report'
