@@ -30,6 +30,7 @@ class CreditReportFilter(django_filters.FilterSet):
 
 
 class CreditReport(graphene_django.DjangoObjectType):
+    id = relay.GlobalID(description='A global ID that relay uses for reactive paging purposes', )
     report_id = graphene.ID(description='The ID of the credit report', required=True, )
     company_id = graphene.UUID(
         description='The company, as identified by the UUID, of the credit report',
@@ -41,16 +42,8 @@ class CreditReport(graphene_django.DjangoObjectType):
 
     class Meta:
         model = CreditReportModel
-        description = 'A credit report'
-
-
-class CreditReportNode(CreditReport):
-    id = relay.GlobalID(description='A global ID that relay uses for reactive paging purposes', )
-
-    class Meta:
-        model = CreditReportModel
         interfaces = (relay.Node,)
-        description = 'A node that encapsulates the credit report to support data-driven React applications'
+        description = 'A credit report'
 
 
 class CreditReportQuery(graphene.ObjectType):
@@ -60,7 +53,7 @@ class CreditReportQuery(graphene.ObjectType):
         report_id=graphene.ID(required=True, description='The ID of the credit report', )
     )
     credit_reports_by_company = filter.DjangoFilterConnectionField(
-        type=CreditReportNode,
+        type=CreditReport,
         description='Search for a list of credit report of a company (by the given UUID) that is ordered by date and '
                     'time',
         filterset_class=CreditReportFilter,
