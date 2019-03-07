@@ -38,6 +38,7 @@ class NewsFilter(django_filters.FilterSet):
 
 
 class News(DjangoObjectType):
+    id = relay.GlobalID(description='A global ID that relay uses for reactive paging purposes', )
     news_id = graphene.ID(description='The ID of the news snippet', required=True, )
     company_id = graphene.UUID(
         description='The company, as identified by the UUID, of the news snippet',
@@ -50,16 +51,8 @@ class News(DjangoObjectType):
 
     class Meta:
         model = NewsModel
-        description = 'A news snippet'
-
-
-class NewsNode(News):
-    id = relay.GlobalID(description='A global ID that relay uses for reactive paging purposes', )
-
-    class Meta:
-        model = NewsModel
         interfaces = (relay.Node,)
-        description = 'A node that encapsulates the news snippet to support data-driven React applications'
+        description = 'A news snippet'
 
 
 class NewsQuery(graphene.ObjectType):
@@ -69,7 +62,7 @@ class NewsQuery(graphene.ObjectType):
         news_id=graphene.ID(required=True, description='The ID of a news snippet', ),
     )
     news_by_company = DjangoFilterConnectionField(
-        type=NewsNode,
+        type=News,
         description='Search for news snippets of a company (by the given UUID) that is ordered by date and time',
         filterset_class=NewsFilter,
     )
