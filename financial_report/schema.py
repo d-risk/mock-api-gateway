@@ -71,8 +71,16 @@ class FinancialReport(graphene_django.DjangoObjectType):
     )
     date_time = graphene.DateTime(description='The date and time of the report', required=True, )
     currency = graphene.String(description='The currency that the report uses', required=True, )
-    financial_data = graphene.List(of_type=FinancialData, description='A list of financial data', required=True, )
-    financial_ratios = graphene.List(of_type=FinancialRatio, description='A list of financial ratios', required=True, )
+    financial_data = graphene.List(
+        of_type=graphene.NonNull(of_type=FinancialData),
+        description='A list of financial data',
+        required=True,
+    )
+    financial_ratios = graphene.List(
+        of_type=graphene.NonNull(of_type=FinancialRatio),
+        description='A list of financial ratios',
+        required=True,
+    )
 
     class Meta:
         model = FinancialReportModel
