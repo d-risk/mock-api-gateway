@@ -1,4 +1,7 @@
+import datetime
 import logging
+from datetime import timezone
+from random import uniform, choice
 
 import django_filters
 import graphene
@@ -7,6 +10,8 @@ import graphql
 from graphene import relay
 from graphene_django import filter
 
+from common.management.commands._credit_report import random_credit_report, RATINGS
+from company.models import Company
 from credit_report.models import CreditReport as CreditReportModel
 
 
@@ -71,5 +76,28 @@ class CreditReportQuery(graphene.ObjectType):
             report_id: graphene.ID,
             **kwargs,
     ) -> CreditReport:
-        logging.debug(f'self={self}, info={info}, report_id={report_id} kwargs={kwargs}')
+        logging.debug(f'self={self}, info={info}, report_id={report_id}, kwargs={kwargs}')
         return CreditReportModel.objects.get(report_id=report_id, )
+
+    def resolve_custom_credit_report(
+            self,
+            info: graphql.ResolveInfo,
+            company_id: graphene.UUID,
+            years: graphene.Int,
+            **kwargs,
+    ) -> CreditReport:
+        logging.debug(f'self={self}, info={info}, company_id={company_id}, years={years}, kwargs={kwargs}')
+        # TODO PART2 check if credit report already exists
+        # TODO look for the company's financial reports and go back n years
+        # TODO average out the financial numbers and feed it into the credit rating engine
+        # TODO return the new report
+        company = Company.objects.get(company_id=company_id)
+        date_time = datetime.datetime.now(tz=timezone.utc)
+        credit_report = CreditReportModel.objects.create(
+            company_id=company.company_id,
+            probability_of_default=uniform(0, 1),
+            credit_rating=choice(RATINGS),
+            date_time=date_time,
+        )
+        logging.debug(f'credit_report={credit_report}')
+        return credit_report
