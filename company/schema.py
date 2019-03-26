@@ -1,18 +1,21 @@
 import logging
+from typing import List
 
 import django_filters
 import graphene
 import graphene_django
 import graphql
+from django.db.models import QuerySet
 from graphene import relay
 from graphene_django import filter
 
 from company.models import Company as CompanyModel
+from credit_report.models import CreditReport as CreditReportModel
 
 
 # Annex F - Company Data Service
 # GraphQL data model
-class CompanyFilter(django_filters.FilterSet):
+class CompanyFilterByName(django_filters.FilterSet):
     name = django_filters.CharFilter(required=True, lookup_expr='icontains')
 
     class Meta:
@@ -46,7 +49,12 @@ class CompanyQuery(graphene.ObjectType):
     companies_by_name = filter.DjangoFilterConnectionField(
         type=Company,
         description='Search for companies that contains the given name',
-        filterset_class=CompanyFilter,
+        filterset_class=CompanyFilterByName,
+    )
+    companies_by_ratings = graphene_django.DjangoConnectionField(
+        type=Company,
+        description='Search for companies that matches the given ratings',
+        ratings=graphene.List(of_type=graphene.String, required=True, ),
     )
 
     def resolve_company(
@@ -57,3 +65,19 @@ class CompanyQuery(graphene.ObjectType):
     ) -> Company:
         logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
         return CompanyModel.objects.get(company_id=company_id, )
+
+    def resolve_companies_by_ratings(
+            self,
+            info: graphql.ResolveInfo,
+            ratings: graphene.List,
+            **kwargs,
+    ) -> List[Company]:
+        logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
+        companies: QuerySet = CompanyModel.objects.all()
+        results: List[Company] = []
+        for company in companies:
+            credit_reports: QuerySet = CreditReportModel.objects.filter(company_id=company.company_id)
+            credit_report: CreditReportModel = credit_reports.latest(field_name='date_time')
+            if credit_report.credit_rating in ratings:
+                results.append(company)
+        return results
