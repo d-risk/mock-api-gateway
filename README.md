@@ -1,5 +1,7 @@
 # Credit Report Service
 
+[![Build Status](https://dev.azure.com/d-risk/credit-report-service/_apis/build/status/d-risk.credit-report-service?branchName=master)](https://dev.azure.com/d-risk/credit-report-service/_build/latest?definitionId=7&branchName=master)
+
 This project is a microservice that provides credit reports on companies through [GraphQL].
 You can learn more about GraphQL by following the given link.
 
