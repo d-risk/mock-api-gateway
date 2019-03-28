@@ -105,6 +105,9 @@ ENV/
 .idea/
 *.iml
 
+# VS Code
+.vscode/
+
 ### Application specific
 noun_list.txt
 schema.json
