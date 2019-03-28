@@ -5,7 +5,7 @@ import django_filters
 import graphene
 import graphene_django
 import graphql
-from django.db.models import QuerySet
+from django.db.models import QuerySet, functions
 from graphene import relay
 from graphene_django import filter
 
@@ -21,6 +21,10 @@ class CompanyFilterByName(django_filters.FilterSet):
     class Meta:
         model = CompanyModel
         fields = ['name', ]
+
+    @property
+    def qs(self):
+        return super(CompanyFilterByName, self).qs.order_by(functions.Upper('name'))
 
 
 class Company(graphene_django.DjangoObjectType):
