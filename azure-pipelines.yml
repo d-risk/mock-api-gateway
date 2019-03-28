@@ -15,8 +15,15 @@ steps:
   - script: |
       python -m pip install --upgrade pip setuptools
       pip install -r requirements.freeze.txt
+      pip install --upgrade unittest-xml-reporting
     displayName: 'Install prerequisites'
 
   - script: |
-      python manage.py test
+      python manage.py test --testrunner xmlrunner.extra.djangotestrunner.XMLTestRunner --no-input
     displayName: 'Run tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunTitle: 'Python $(PYTHON_VERSION)'
+      testResultsFiles: '**/TEST-*.xml'
+    condition: succeededOrFailed()
