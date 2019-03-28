@@ -16,7 +16,7 @@ from credit_report.models import CreditReport as CreditReportModel
 # Annex F - Company Data Service
 # GraphQL data model
 class CompanyFilterByName(django_filters.FilterSet):
-    name = django_filters.CharFilter(required=True, lookup_expr='icontains')
+    name = django_filters.CharFilter(required=True, lookup_expr='istartswith')
 
     class Meta:
         model = CompanyModel
