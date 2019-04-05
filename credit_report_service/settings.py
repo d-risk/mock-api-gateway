@@ -69,6 +69,7 @@ INSTALLED_APPS: List[str] = [
     'credit_report',
     'financial_report',
     'news',
+    'credit_rating',
 ]
 
 MIDDLEWARE: List[str] = [
