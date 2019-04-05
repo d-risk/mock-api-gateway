@@ -1,8 +1,11 @@
 *
 !common/
 !company/
+!credit_rating/
 !credit_report/
 !credit_report_service/
+!financial_report/
+!news/
 !requirements.freeze.txt
 !uwsgi.yaml
 
