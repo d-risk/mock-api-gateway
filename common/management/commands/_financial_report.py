@@ -100,4 +100,7 @@ def random_financial_reports(company: Company, from_year: int, to_year: int) -> 
         date_time = datetime(year=year, month=randint(1, 12), day=randint(1, 28), tzinfo=timezone.utc, )
         financial_report = random_financial_report(company=company, date_time=date_time, )
         financial_reports.append(financial_report, )
+        date_time = datetime(year=year, month=randint(1, 12), day=randint(1, 28), tzinfo=timezone.utc, )
+        financial_report = random_financial_report(company=company, date_time=date_time, )
+        financial_reports.append(financial_report, )
     return financial_reports
