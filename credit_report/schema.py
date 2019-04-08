@@ -63,12 +63,6 @@ class CreditReportQuery(graphene.ObjectType):
                     'time',
         filterset_class=CreditReportFilter,
     )
-    custom_credit_report = graphene.Field(
-        type=CreditReport,
-        description='Get a custom credit report for a company using the average of the past number of years',
-        company_id=graphene.UUID(description='The UUID of the company', required=True, ),
-        years=graphene.Int(description='Use the average of the past number of years', required=True, ),
-    )
 
     def resolve_credit_report(
             self,
@@ -79,7 +73,15 @@ class CreditReportQuery(graphene.ObjectType):
         logging.debug(f'self={self}, info={info}, report_id={report_id}, kwargs={kwargs}')
         return CreditReportModel.objects.get(report_id=report_id, )
 
-    def resolve_custom_credit_report(
+
+class CustomCreditReport(graphene.Mutation):
+    Output = CreditReport
+
+    class Arguments:
+        company_id = graphene.UUID(description='The UUID of a company', required=True, )
+        years = graphene.Int(description='Use the average of the past number of years', required=True, )
+
+    def mutate(
             self,
             info: graphql.ResolveInfo,
             company_id: graphene.UUID,
@@ -87,10 +89,6 @@ class CreditReportQuery(graphene.ObjectType):
             **kwargs,
     ) -> CreditReport:
         logging.debug(f'self={self}, info={info}, company_id={company_id}, years={years}, kwargs={kwargs}')
-        # TODO PART2 check if credit report already exists
-        # TODO look for the company's financial reports and go back n years
-        # TODO average out the financial numbers and feed it into the credit rating engine
-        # TODO return the new report
         company = Company.objects.get(company_id=company_id)
         date_time = datetime.datetime.now(tz=timezone.utc)
         credit_report = CreditReportModel.objects.create(
@@ -101,3 +99,10 @@ class CreditReportQuery(graphene.ObjectType):
         )
         logging.debug(f'credit_report={credit_report}')
         return credit_report
+
+
+class CreditReportMutation(graphene.ObjectType):
+    custom_credit_report = CustomCreditReport.Field(
+        description="Customize a credit report for a company using the average of the past number of years",
+        required=True,
+    )
