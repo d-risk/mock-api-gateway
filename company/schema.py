@@ -11,6 +11,7 @@ from graphene_django import filter
 
 from company.models import Company as CompanyModel
 from credit_report.models import CreditReport as CreditReportModel
+from credit_report.schema import CreditReport
 
 
 # Annex F - Company Data Service
@@ -44,6 +45,27 @@ class Company(graphene_django.DjangoObjectType):
         description = 'General information about a company'
 
 
+class CompanyRating(graphene.ObjectType):
+    company = graphene.Field(
+        type=Company,
+        required=True,
+        description='Information about a company',
+    )
+    credit_report = graphene.Field(
+        type=CreditReport,
+        required=True,
+        description='The latest credit rating associated to the company',
+    )
+
+    class Meta:
+        interfaces = (relay.Node,)
+
+
+class CompanyRatingConnection(relay.Connection):
+    class Meta:
+        node = CompanyRating
+
+
 class CompanyQuery(graphene.ObjectType):
     company = graphene.Field(
         type=Company,
@@ -55,10 +77,10 @@ class CompanyQuery(graphene.ObjectType):
         description='Search for companies that contains the given name',
         filterset_class=CompanyFilterByName,
     )
-    companies_by_ratings = graphene_django.DjangoConnectionField(
-        type=Company,
+    companies_by_ratings = relay.ConnectionField(
+        type=CompanyRatingConnection,
         description='Search for companies that matches the given ratings',
-        ratings=graphene.List(of_type=graphene.String, required=True, ),
+        ratings=graphene.List(of_type=graphene.NonNull(graphene.String), required=True, ),
     )
 
     def resolve_company(
@@ -75,13 +97,15 @@ class CompanyQuery(graphene.ObjectType):
             info: graphql.ResolveInfo,
             ratings: graphene.List,
             **kwargs,
-    ) -> List[Company]:
+    ) -> List[CompanyRating]:
         logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
         companies: QuerySet = CompanyModel.objects.all()
-        results: List[Company] = []
+        credit_reports: QuerySet = CreditReportModel.objects.all()
+        results: List[CompanyRating] = []
         for company in companies:
-            credit_reports: QuerySet = CreditReportModel.objects.filter(company_id=company.company_id)
-            credit_report: CreditReportModel = credit_reports.latest(field_name='date_time')
+            credit_report: CreditReportModel = credit_reports.filter(
+                company_id=company.company_id
+            ).latest(field_name='date_time')
             if credit_report.credit_rating in ratings:
-                results.append(company)
+                results.append(CompanyRating(company=company, credit_report=credit_report))
         return results
