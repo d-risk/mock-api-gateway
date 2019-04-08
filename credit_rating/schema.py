@@ -18,7 +18,11 @@ class CreditRating(graphene_django.DjangoObjectType):
 
 
 class CreditRatingQuery(graphene.ObjectType):
-    ratings = graphene.List(of_type=CreditRating, description='A list of credit ratings', required=True)
+    ratings = graphene.List(
+        of_type=graphene.NonNull(CreditRating),
+        description='A list of credit ratings',
+        required=True,
+    )
 
     def resolve_ratings(self, info: graphql.ResolveInfo, **kwargs) -> List[CreditRatingModel]:
         logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
