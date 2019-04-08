@@ -29,6 +29,10 @@ class CreditRating(enum.IntEnum):
     C = 21,
     D = 22,
 
+    @property
+    def readable_name(self) -> str:
+        return super(CreditRating, self).name.replace('_PLUS', '+').replace('_MINUS', '-')
+
 
 class CreditRatingModel(models.Model):
     order = models.IntegerField(primary_key=True, editable=False, )

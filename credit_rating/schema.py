@@ -28,6 +28,5 @@ class CreditRatingQuery(graphene.ObjectType):
         logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
         result: List[CreditRatingModel] = []
         for rating in CreditRatingEnum:
-            name = rating.name.replace('_PLUS', '+').replace('_MINUS', '-')
-            result.append(CreditRatingModel(order=rating.value, name=name))
+            result.append(CreditRatingModel(order=rating.value, name=rating.readable_name))
         return result
