@@ -10,8 +10,8 @@ import graphql
 from graphene import relay
 from graphene_django import filter
 
-from common.management.commands._credit_report import random_credit_report, RATINGS
 from company.models import Company
+from credit_rating.models import CreditRating
 from credit_report.models import CreditReport as CreditReportModel
 
 
@@ -94,7 +94,7 @@ class CustomCreditReport(graphene.Mutation):
         credit_report = CreditReportModel.objects.create(
             company_id=company.company_id,
             probability_of_default=uniform(0, 1),
-            credit_rating=choice(RATINGS),
+            credit_rating=choice([rating for rating in CreditRating]).readable_name,
             date_time=date_time,
         )
         logging.debug(f'credit_report={credit_report}')
