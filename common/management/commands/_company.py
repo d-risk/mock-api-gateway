@@ -37,7 +37,7 @@ def random_company(nouns: List[str], ) -> Tuple[Company, bool]:
                     'nascetur ridiculus mus. Pellentesque lacinia nulla non erat blandit ultrices. Aenean '
                     'pharetra a eros vel varius. Quisque vitae ipsum sed neque tempor maximus. Vestibulum quis '
                     'leo fringilla, cursus tortor ac, finibus arcu.'
-                    ''
+                    '\n'
                     'Cras ex velit, lobortis quis malesuada quis, dignissim vitae eros. Praesent arcu nibh, '
                     'porttitor eget dui sed, convallis venenatis justo. Donec a quam non velit fermentum '
                     'suscipit. Duis ultrices iaculis mauris, at malesuada odio feugiat ac. Nullam et accumsan '
