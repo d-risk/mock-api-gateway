@@ -31,11 +31,11 @@ steps:
   - bash: |
       pip install --upgrade unittest-xml-reporting
       python manage.py test --testrunner xmlrunner.extra.djangotestrunner.XMLTestRunner --no-input
-    displayName: 'Run tests'
+    displayName: 'Run tests for Python $($pythonVersion)'
 
   - task: PublishTestResults@2
     inputs:
-      testRunTitle: 'Python $($pythonVersion)'
+      testRunTitle: 'Test results for Python $($pythonVersion)'
       testResultsFiles: '**/TEST-*.xml'
     condition: succeededOrFailed()
 
