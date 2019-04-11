@@ -25,6 +25,10 @@ steps:
     displayName: 'Install prerequisites'
 
   - bash: |
+      python manage.py migrate
+    displayName: 'Initialize db.sqlite3'
+
+  - bash: |
       pip install --upgrade unittest-xml-reporting
       python manage.py test --testrunner xmlrunner.extra.djangotestrunner.XMLTestRunner --no-input
     displayName: 'Run tests'
@@ -36,6 +40,7 @@ steps:
     condition: succeededOrFailed()
 
   - bash: |
+      python manage.py
       docker build --tag $imageName .
       docker push $awsRegion/$imageName
     displayName: 'Build Docker image'
