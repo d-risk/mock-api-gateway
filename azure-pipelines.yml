@@ -3,7 +3,7 @@ pool:
 
 variables:
   pythonVersion: '3.7'
-  imageName: 'drisk/credit-report-service'
+  imageName: 'drisk/mock-api-gateway'
   latestImage: '$(imageName):latest'
   versionedImage: '$(imageName):$(Build.BuildId)'
   awsRegion: '268927183565.dkr.ecr.ap-southeast-1.amazonaws.com'
@@ -40,8 +40,8 @@ steps:
     condition: succeededOrFailed()
 
   - bash: |
-      python manage.py
-      docker build --tag $imageName .
-      docker push $awsRegion/$imageName
+      python manage.py populatedb --companies 100 --singtel
+      docker build --tag $(imageName) .
+      docker push $(awsRegion)/$(imageName)
     displayName: 'Build Docker image'
-    condition: succeeded()
+    condition: succeededOrFailed()
