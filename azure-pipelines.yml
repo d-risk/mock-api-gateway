@@ -53,13 +53,13 @@ steps:
       $(aws ecr get-login --no-include-email --region ap-southeast-1)
     displayName: 'Install AWS CLI'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    env:
+      AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+      AWS_DEFAULT_REGION: $(AWS_DEFAULT_REGION)
+      AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
 
   - bash: |
       aws ecr create-repository --repository-name $(imageName)
       docker push $(awsRegion)/$(imageName)
     displayName: 'Push Docker image to AWS ECR repository'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    env:
-      AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-      AWS_DEFAULT_REGION: $(AWS_DEFAULT_REGION)
-      AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
