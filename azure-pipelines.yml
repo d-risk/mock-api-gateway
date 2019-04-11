@@ -2,11 +2,17 @@ pool:
   vmImage: ubuntu-16.04
 
 variables:
-  pythonVersion: '3.7'
-  imageName: 'drisk/mock-api-gateway'
-  latestImage: '$(imageName):latest'
-  versionedImage: '$(imageName):$(Build.BuildId)'
-  awsRegion: '268927183565.dkr.ecr.ap-southeast-1.amazonaws.com'
+  - group: 'AWS Credentials'
+  - name: pythonVersion
+    value: '3.7'
+  - name: imageName
+    value: 'drisk/mock-api-gateway'
+  - name: latestImage
+    value: '$(imageName):latest'
+  - name: versionedImage
+    value: '$(imageName):$(Build.BuildId)'
+  - name: awsRegion
+    value: '268927183565.dkr.ecr.ap-southeast-1.amazonaws.com'
 
 steps:
   - task: UsePythonVersion@0
@@ -39,5 +45,12 @@ steps:
   - bash: |
       python manage.py populatedb --companies 1 --singtel
       docker build --tag $(latestImage) --tag $(versionedImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionedImage) .
-      docker push $(awsRegion)/$(imageName)
     displayName: 'Build Docker image'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+  - bash: |
+      pip install --upgrade awscli
+      $(aws ecr get-login --no-include-email --region ap-southeast-1)
+      docker push $(awsRegion)/$(imageName)
+    displayName: 'Push Docker image to AWS'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
