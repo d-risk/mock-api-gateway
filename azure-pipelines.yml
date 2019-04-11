@@ -2,7 +2,7 @@ pool:
   vmImage: ubuntu-16.04
 
 variables:
-  pythonVersion: '3.6'
+  pythonVersion: '3.7'
   imageName: 'drisk/mock-api-gateway'
   latestImage: '$(imageName):latest'
   versionedImage: '$(imageName):$(Build.BuildId)'
@@ -38,6 +38,6 @@ steps:
 
   - bash: |
       python manage.py populatedb --companies 1 --singtel
-      docker build --tag $(latestImage) --tag $(versionedImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionedImage)) .
+      docker build --tag $(latestImage) --tag $(versionedImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionedImage) .
       docker push $(awsRegion)/$(imageName)
     displayName: 'Build Docker image'
