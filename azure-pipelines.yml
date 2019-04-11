@@ -63,3 +63,7 @@ steps:
       docker push $(awsRegion)/$(imageName)
     displayName: 'Push Docker image to AWS ECR repository'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    env:
+      AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+      AWS_DEFAULT_REGION: $(AWS_DEFAULT_REGION)
+      AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
