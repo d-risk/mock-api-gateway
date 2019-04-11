@@ -27,7 +27,7 @@ class CompanyTestCase(TestCase):
         )
 
         self.assertEqual(Company.objects.count(), 1)
-        self.assertIsNotNone(company.id)
+        self.assertIsNotNone(company.company_id)
         self.assertEqual(company.name, name)
         self.assertEqual(company.industry, industry)
         self.assertEqual(company.description, description)
