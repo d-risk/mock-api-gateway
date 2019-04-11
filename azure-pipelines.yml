@@ -2,7 +2,7 @@ pool:
   vmImage: ubuntu-16.04
 
 variables:
-  pythonVersion: '3.7'
+  pythonVersion: '3.6'
   imageName: 'drisk/mock-api-gateway'
   latestImage: '$(imageName):latest'
   versionedImage: '$(imageName):$(Build.BuildId)'
@@ -25,22 +25,19 @@ steps:
     displayName: 'Install prerequisites'
 
   - bash: |
-      python manage.py migrate
-    displayName: 'Initialize db.sqlite3'
-
-  - bash: |
       pip install --upgrade unittest-xml-reporting
+      python manage.py migrate
       python manage.py test --testrunner xmlrunner.extra.djangotestrunner.XMLTestRunner --no-input
-    displayName: 'Run tests for Python $($pythonVersion)'
+    displayName: 'Run tests for Python $(pythonVersion)'
 
   - task: PublishTestResults@2
     inputs:
-      testRunTitle: 'Test results for Python $($pythonVersion)'
+      testRunTitle: 'Test results for Python $(pythonVersion)'
       testResultsFiles: '**/TEST-*.xml'
     condition: succeededOrFailed()
 
   - bash: |
-      python manage.py populatedb --companies 100 --singtel
-      docker build --tag $(imageName) .
+      python manage.py populatedb --companies 1 --singtel
+      docker build --tag $(latestImage) --tag $(versionedImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionedImage)) .
       docker push $(awsRegion)/$(imageName)
     displayName: 'Build Docker image'
