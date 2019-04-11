@@ -44,4 +44,3 @@ steps:
       docker build --tag $(imageName) .
       docker push $(awsRegion)/$(imageName)
     displayName: 'Build Docker image'
-    condition: succeededOrFailed()
