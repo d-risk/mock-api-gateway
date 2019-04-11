@@ -25,7 +25,7 @@ class NewsTestCase(TestCase):
 
         self.assertEqual(News.objects.count(), 1)
         self.assertIsNotNone(news)
-        self.assertIsNotNone(news.id)
+        self.assertIsNotNone(news.news_id)
         self.assertEqual(news.company_id, company_id)
         self.assertEqual(news.title, title)
         self.assertEqual(news.date_time, date_time)
