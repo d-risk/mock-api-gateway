@@ -5,9 +5,9 @@ RUN apk add --no-cache --update \
         uwsgi \
     	uwsgi-python3
 
-ENV user app
-ENV workdir /home/${user}
-ENV APP_SECRET_KEY 123
+ARG user=app
+ARG workdir=/home/${user}
+ARG requirements=requirements.freeze.txt
 
 RUN addgroup -S ${user} && adduser -G ${user} -S ${user}
 
@@ -18,11 +18,12 @@ WORKDIR ${workdir}
 # only copy the requirements.freeze.txt file so that the
 # next run command to install python packages is not executed unless
 # the requirements.freeze.txt file changes
-COPY --chown=app:app requirements.freeze.txt ${workdir}
+COPY --chown=app:app ${requirements} ${workdir}
 
 RUN python3 -m venv venv-app \
     && source venv-app/bin/activate \
-    && pip3 install --no-cache-dir --requirement requirements.freeze.txt
+    && python3 -m pip install --upgrade pip setuptools \
+    && pip3 install --no-cache-dir --requirement ${requirements}
 
 COPY --chown=app:app . ${workdir}
 
