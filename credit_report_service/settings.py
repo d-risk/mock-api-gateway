@@ -60,7 +60,7 @@ DEBUG: bool = not is_production()
 logger.info(f"DEBUG={DEBUG}")
 
 ALLOWED_HOSTS: List[str] = [
-    'd-risk.tech'
+    '.d-risk.tech'
 ]
 if DEBUG:
     ALLOWED_HOSTS += ['localhost', '127.0.0.1']
