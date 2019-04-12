@@ -12,16 +12,33 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import logging
 import os
 from logging import Logger
-
-from django.utils.crypto import get_random_string
 from typing import List, Dict, Any
 
+from django.utils.crypto import get_random_string
 
-def is_production():
+
+def is_production() -> bool:
     return os.getenv('APP_PRODUCTION') is not None and os.getenv('APP_PRODUCTION').lower() == 'true'
 
 
-logging.basicConfig()
+def log_level() -> int:
+    if is_production():
+        return os.getenv('APP_LOG_LEVEL', logging.INFO)
+    else:
+        return logging.DEBUG
+
+
+def secret_key() -> str:
+    if is_production():
+        key = os.getenv('APP_SECRET_KEY')
+        if key is None or key == '':
+            raise LookupError()
+        return key
+    else:
+        return get_random_string(length=50)
+
+
+logging.basicConfig(level=log_level())
 logger: Logger = logging.getLogger(__name__)
 if is_production():
     logger.setLevel(os.getenv('APP_LOG_LEVEL', 'INFO'))
@@ -36,10 +53,7 @@ BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-if is_production():
-    SECRET_KEY: str = os.getenv('APP_SECRET_KEY')
-else:
-    SECRET_KEY: str = get_random_string(length=50)
+SECRET_KEY: str = secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG: bool = not is_production()
