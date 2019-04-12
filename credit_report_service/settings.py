@@ -27,7 +27,7 @@ if is_production():
     logger.setLevel(os.getenv('APP_LOG_LEVEL', 'INFO'))
 else:
     logger.setLevel('DEBUG')
-logger.info('APP_PRODUCTION=%s', is_production())
+logger.info(f"APP_PRODUCTION={is_production()}")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,14 +43,14 @@ else:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG: bool = not is_production()
-logger.info('DEBUG=%s', DEBUG)
+logger.info(f"DEBUG={DEBUG}")
 
 ALLOWED_HOSTS: List[str] = [
     'd-risk.tech'
 ]
 if DEBUG:
     ALLOWED_HOSTS += ['localhost', '127.0.0.1']
-logger.info('ALLOWED_HOSTS=%s', ALLOWED_HOSTS)
+logger.info(f"ALLOWED_HOSTS={ALLOWED_HOSTS}")
 
 # Application definition
 
