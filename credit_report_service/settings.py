@@ -44,10 +44,6 @@ def secret_key() -> str:
 
 logging.basicConfig(level=log_level())
 logger: Logger = logging.getLogger(__name__)
-if is_production():
-    logger.setLevel(os.getenv('APP_LOG_LEVEL', 'INFO'))
-else:
-    logger.setLevel('DEBUG')
 logger.info(f"APP_PRODUCTION={is_production()}")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
