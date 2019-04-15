@@ -27,6 +27,9 @@ RUN python3 -m venv venv-app \
 
 COPY --chown=app:app . ${workdir}
 
+# TODO resolve the issue with secret key
+ENV APP_PRODUCTION "false"
+
 CMD ["uwsgi", "--yaml", "uwsgi.yaml"]
 
 EXPOSE 8080
