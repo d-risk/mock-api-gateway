@@ -3,3 +3,4 @@ django-countries
 django-filter
 graphene
 graphene-django
+requests
