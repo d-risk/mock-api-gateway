@@ -10,7 +10,7 @@ graphql-core==2.1
 graphql-relay==0.4.5
 idna==2.8
 promise==2.2.1
-pytz==2018.9
+pytz==2019.1
 requests==2.21.0
 Rx==1.6.1
 singledispatch==3.4.0.3
