@@ -18,7 +18,11 @@ from django.utils.crypto import get_random_string
 
 
 def is_production() -> bool:
-    return os.getenv('APP_PRODUCTION') is not None and os.getenv('APP_PRODUCTION').lower() == 'true'
+    """
+    Always assume that code is running in production unless explicitly specified.
+    :return: False if the code is to be executed in non-production mode, otherwise True.
+    """
+    return not bool(os.getenv('APP_PRODUCTION'))
 
 
 def log_level() -> int:
