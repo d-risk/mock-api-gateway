@@ -14,6 +14,7 @@ import os
 from logging import Logger
 from typing import List, Dict, Any
 
+import requests
 from django.utils.crypto import get_random_string
 
 
@@ -42,6 +43,14 @@ def secret_key() -> str:
         return get_random_string(length=50)
 
 
+def add_aws_ecs_private_ip(hosts: List[str]):
+    try:
+        ip: str = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01).text
+        hosts.append(ip)
+    except requests.exceptions.RequestException:
+        logger.warning(f"Unable to get AWS ECS local private IP")
+
+
 logging.basicConfig(level=log_level())
 logger: Logger = logging.getLogger(__name__)
 logger.info(f"APP_PRODUCTION={is_production()}")
@@ -63,7 +72,9 @@ ALLOWED_HOSTS: List[str] = [
     '.d-risk.tech'
 ]
 if DEBUG:
-    ALLOWED_HOSTS += ['localhost', '127.0.0.1']
+    ALLOWED_HOSTS.append('localhost')
+    ALLOWED_HOSTS.append('127.0.0.1')
+add_aws_ecs_private_ip(ALLOWED_HOSTS)
 logger.info(f"ALLOWED_HOSTS={ALLOWED_HOSTS}")
 
 # Application definition
