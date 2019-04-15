@@ -32,6 +32,7 @@ steps:
 
   - bash: |
       pip install --upgrade unittest-xml-reporting
+      export APP_PRODUCTION="false"
       python manage.py migrate
       python manage.py test --testrunner xmlrunner.extra.djangotestrunner.XMLTestRunner --no-input
     displayName: 'Run tests for Python $(pythonVersion)'
