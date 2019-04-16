@@ -37,6 +37,7 @@ def secret_key() -> str:
     if is_production():
         key = os.getenv('APP_SECRET_KEY')
         if key is None or key == '':
+            logger.error(f"Secret key is not defined: {key}")
             raise LookupError()
         return key
     else:
@@ -47,8 +48,8 @@ def add_aws_ecs_private_ip(hosts: List[str]):
     try:
         ip: str = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01).text
         hosts.append(ip)
-    except requests.exceptions.RequestException:
-        logger.warning(f"Unable to get AWS ECS local private IP")
+    except requests.exceptions.RequestException as error:
+        logger.warning(f"Unable to get AWS ECS local private IPv4: {error}")
 
 
 logging.basicConfig(level=log_level())
@@ -69,7 +70,7 @@ DEBUG: bool = not is_production()
 logger.info(f"DEBUG={DEBUG}")
 
 ALLOWED_HOSTS: List[str] = [
-    '.d-risk.tech'
+    '.d-risk.tech',
 ]
 if DEBUG:
     ALLOWED_HOSTS.append('localhost')
@@ -89,12 +90,13 @@ INSTALLED_APPS: List[str] = [
 
     # Graphene Django
     'graphene_django',
+
     'common',
     'company',
+    'credit_rating',
     'credit_report',
     'financial_report',
     'news',
-    'credit_rating',
 ]
 
 MIDDLEWARE: List[str] = [
