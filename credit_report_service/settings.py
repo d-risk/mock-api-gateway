@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
+import ipaddress
 import logging
 import os
 from logging import Logger
@@ -16,6 +17,7 @@ from typing import List, Dict, Any
 
 import requests
 from django.utils.crypto import get_random_string
+from requests import Response
 
 
 def is_production() -> bool:
@@ -46,8 +48,14 @@ def secret_key() -> str:
 
 def add_aws_ecs_private_ip(hosts: List[str]):
     try:
-        ip: str = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01).text
-        hosts.append(ip)
+        response: Response = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01)
+        if response.status_code == 200:
+            ip: str = response.text
+            try:
+                ipaddress.ip_address(ip)
+                hosts.append(ip)
+            except ValueError as error:
+                logger.warning(f"'{ip}' is not a proper IPv4 address:{error}")
     except requests.exceptions.RequestException as error:
         logger.warning(f"Unable to get AWS ECS local private IPv4: {error}")
 
