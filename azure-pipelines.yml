@@ -44,6 +44,7 @@ steps:
     condition: succeededOrFailed()
 
   - bash: |
+      export APP_PRODUCTION="false"
       python manage.py populatedb --companies 100 --singtel
       docker build --tag $(latestImage) --tag $(versionedImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionedImage) .
     displayName: 'Build Docker image'
