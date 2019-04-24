@@ -99,6 +99,8 @@ INSTALLED_APPS: List[str] = [
     # Graphene Django
     'graphene_django',
 
+    'corsheaders',
+
     'common',
     'company',
     'credit_rating',
@@ -108,6 +110,7 @@ INSTALLED_APPS: List[str] = [
 ]
 
 MIDDLEWARE: List[str] = [
+    'corsheaders.middleware.CorsMiddleware',
     # 'django.middleware.security.SecurityMiddleware',
     # 'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.common.CommonMiddleware',
@@ -115,6 +118,11 @@ MIDDLEWARE: List[str] = [
     # 'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'django.contrib.messages.middleware.MessageMiddleware',
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+# CORS
+CORS_ORIGIN_REGEX_WHITELIST = [
+    r'^(https?://)?([\w-]+\.)?d-risk\.tech',
 ]
 
 ROOT_URLCONF: str = 'credit_report_service.urls'
