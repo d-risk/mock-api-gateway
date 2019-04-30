@@ -104,7 +104,7 @@ INSTALLED_APPS: List[str] = [
     'credit_report_service.common',
     'credit_report_service.company',
     'credit_report_service.credit_rating',
-    'credit_report',
+    'credit_report_service.credit_report',
     'credit_report_service.financial_report',
     'credit_report_service.news',
 ]

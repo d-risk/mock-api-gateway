@@ -3,7 +3,7 @@ from random import randint, choice, uniform
 from typing import List
 
 from credit_report_service.company.models import Company
-from credit_report.models import CreditReport
+from credit_report_service.credit_report.models import CreditReport
 
 RATINGS: List[str] = [
     'AAA',

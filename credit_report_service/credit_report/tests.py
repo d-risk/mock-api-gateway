@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.utils.timezone import now
 
 from credit_report_service.credit_rating.models import CreditRating
-from credit_report.models import CreditReport
+from credit_report_service.credit_report.models import CreditReport
 
 
 # Create your tests here.
