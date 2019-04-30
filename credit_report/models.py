@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
 
-from financial_report.models import FinancialReport
-
 
 # Create your models here.
 # Annex G - Credit Report Service

@@ -3,7 +3,7 @@ from uuid import uuid4
 from django.test import TestCase
 from django.utils.timezone import now
 
-from financial_report.models import FinancialReport
+from credit_report_service.financial_report import FinancialReport
 
 
 # Create your tests here.

@@ -3,7 +3,7 @@ from random import randint, uniform
 from typing import List, Dict
 
 from credit_report_service.company.models import Company
-from financial_report.models import FinancialReport, FinancialData, FinancialRatio
+from credit_report_service.financial_report import FinancialReport, FinancialData, FinancialRatio
 
 REVENUE = 'Revenue'
 EBIT = 'EBIT'

@@ -52,11 +52,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='financialratio',
             name='financial_report',
-            field=models.ForeignKey(editable=False, on_delete=django.db.models.deletion.PROTECT, related_name='financial_ratios', to='financial_report.FinancialReport'),
+            field=models.ForeignKey(editable=False, on_delete=django.db.models.deletion.PROTECT, related_name='financial_ratios', to='credit_report_service.financial_report.FinancialReport'),
         ),
         migrations.AddField(
             model_name='financialdata',
             name='financial_report',
-            field=models.ForeignKey(editable=False, on_delete=django.db.models.deletion.PROTECT, related_name='financial_data', to='financial_report.FinancialReport'),
+            field=models.ForeignKey(editable=False, on_delete=django.db.models.deletion.PROTECT, related_name='financial_data', to='credit_report_service.financial_report.FinancialReport'),
         ),
     ]
