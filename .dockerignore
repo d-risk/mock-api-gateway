@@ -1,13 +1,7 @@
+# ignore everything
 *
-!common/
-!company/
-!credit_rating/
-!credit_report/
+# except the following
 !credit_report_service/
-!financial_report/
-!news/
+!db.sqlite3
 !requirements.freeze.txt
 !uwsgi.yaml
-
-# TODO remove the following
-!db.sqlite3
