@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.timezone import now
 
 from financial_report.models import FinancialReport
-from news.models import News
 
 
 # Create your models here.

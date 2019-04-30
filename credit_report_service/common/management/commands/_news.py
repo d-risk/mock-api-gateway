@@ -3,7 +3,7 @@ from random import choice
 from typing import List
 
 from credit_report_service.company.models import Company
-from news.models import News
+from credit_report_service.news import News
 
 
 def create_news(

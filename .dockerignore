@@ -7,7 +7,7 @@
 !credit_report/
 !credit_report_service/
 !financial_report/
-!news/
+!credit_report_service/news/
 !requirements.freeze.txt
 !uwsgi.yaml
 !db.sqlite3
