@@ -2,10 +2,10 @@ import urllib.request
 from pathlib import Path
 from typing import List
 
-from common.management.commands._company import random_companies
-from common.management.commands._credit_report import random_credit_reports
-from common.management.commands._financial_report import random_financial_reports
-from common.management.commands._news import random_news_list
+from credit_report_service.common.management.commands._company import random_companies
+from credit_report_service.common.management import random_credit_reports
+from credit_report_service.common.management.commands._financial_report import random_financial_reports
+from credit_report_service.common.management.commands._news import random_news_list
 from company.models import Company
 
 NOUN_LIST_URL = 'http://www.desiquintans.com/downloads/nounlist/nounlist.txt'

@@ -101,7 +101,7 @@ INSTALLED_APPS: List[str] = [
 
     'corsheaders',
 
-    'common',
+    'credit_report_service.common',
     'company',
     'credit_rating',
     'credit_report',

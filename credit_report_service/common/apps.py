@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class MainConfig(AppConfig):
-    name = 'common'
+    name = 'credit_report_service.common'
