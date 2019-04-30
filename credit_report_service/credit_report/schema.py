@@ -88,16 +88,16 @@ class CustomCreditReport(graphene.Mutation):
             years: graphene.Int,
             **kwargs,
     ) -> CreditReport:
-        logging.debug(f'self={self}, info={info}, company_id={company_id}, years={years}, kwargs={kwargs}')
+        logging.debug(f"self={self}, info={info}, company_id={company_id}, years={years}, kwargs={kwargs}")
         company = Company.objects.get(company_id=company_id)
         date_time = datetime.datetime.now(tz=timezone.utc)
-        credit_report = CreditReportModel.objects.create(
+        credit_report = CreditReportModel(
             company_id=company.company_id,
             probability_of_default=uniform(0, 1),
             credit_rating=choice([rating for rating in CreditRating]).readable_name,
             date_time=date_time,
         )
-        logging.debug(f'credit_report={credit_report}')
+        logging.debug(f"credit_report={credit_report}")
         return credit_report
 
 

@@ -8,9 +8,11 @@ import graphql
 from graphene import relay
 from graphene_django import filter
 
-from credit_report_service.financial_report import FinancialData as FinancialDataModel
-from credit_report_service.financial_report import FinancialRatio as FinancialRatioModel
-from credit_report_service.financial_report import FinancialReport as FinancialReportModel
+from credit_report_service.financial_report.models import (
+    FinancialData as FinancialDataModel,
+    FinancialRatio as FinancialRatioModel,
+    FinancialReport as FinancialReportModel,
+)
 
 
 class FinancialReportFilter(django_filters.FilterSet):

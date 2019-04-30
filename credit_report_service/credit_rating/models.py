@@ -1,4 +1,5 @@
 import enum
+from typing import List
 
 from django.db import models
 
@@ -30,8 +31,12 @@ class CreditRating(enum.IntEnum):
     D = 22,
 
     @property
-    def readable_name(self) -> str:
+    def readable_name(self: 'CreditRating') -> str:
         return super(CreditRating, self).name.replace('_PLUS', '+').replace('_MINUS', '-')
+
+    @classmethod
+    def as_list(cls: 'CreditRating') -> List['CreditRating']:
+        return [x for x in CreditRating]
 
 
 class CreditRatingModel(models.Model):

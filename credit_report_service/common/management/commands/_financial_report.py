@@ -3,7 +3,7 @@ from random import randint, uniform
 from typing import List, Dict
 
 from credit_report_service.company.models import Company
-from credit_report_service.financial_report import FinancialReport, FinancialData, FinancialRatio
+from credit_report_service.financial_report.models import FinancialReport, FinancialData, FinancialRatio
 
 REVENUE = 'Revenue'
 EBIT = 'EBIT'
@@ -35,14 +35,14 @@ FINANCIAL_DATA: List[str] = [
 ]
 
 FINANCIAL_RATIOS: Dict[str, str] = {
-    'Debt Cover': f'{EBITDA} / {INTEREST_EXPENSE}',
-    'Size': f'ln({TOTAL_ASSETS})',
-    'ROA': f'{PROFIT_AFTER_TAX} / {TOTAL_ASSETS}',
-    'Quick Ratio': f'(Total Current Assets - Inventory) / Total Current Liabilities',
-    'Liabilities over Total Assets': f'{TOTAL_LIABILITIES} / {TOTAL_ASSETS}',
-    'ROE': f'Profit After Tax / Total Equity',
-    'Leverage': f'(Total Debt - Cash) / {EBITDA}',
-    'Current Ratio': f'Total Current Assets / Total Current Liabilities',
+    'Debt Cover': f"{EBITDA} / {INTEREST_EXPENSE}",
+    'Size': f"ln({TOTAL_ASSETS})",
+    'ROA': f"{PROFIT_AFTER_TAX} / {TOTAL_ASSETS}",
+    'Quick Ratio': f"(Total Current Assets - Inventory) / Total Current Liabilities",
+    'Liabilities over Total Assets': f"{TOTAL_LIABILITIES} / {TOTAL_ASSETS}",
+    'ROE': f"Profit After Tax / Total Equity",
+    'Leverage': f"(Total Debt - Cash) / {EBITDA}",
+    'Current Ratio': f"Total Current Assets / Total Current Liabilities",
 }
 
 
@@ -55,7 +55,7 @@ def create_financial_report(
         date_time=date_time,
         currency='SGD'
     )
-    print(f'        + Financial Report \'{financial_report.report_id}\' ({financial_report.date_time}) created', )
+    print(f"        + Financial Report '{financial_report.report_id}' ({financial_report.date_time}) created", )
     return financial_report
 
 

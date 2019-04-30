@@ -3,7 +3,7 @@ from uuid import uuid4
 from django.test import TestCase
 from django.utils.timezone import now
 
-from credit_report_service.news import News
+from credit_report_service.news.models import News
 
 
 # Create your tests here.

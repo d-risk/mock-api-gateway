@@ -3,32 +3,8 @@ from random import randint, choice, uniform
 from typing import List
 
 from credit_report_service.company.models import Company
+from credit_report_service.credit_rating.models import CreditRating
 from credit_report_service.credit_report.models import CreditReport
-
-RATINGS: List[str] = [
-    'AAA',
-    'AA+',
-    'AA',
-    'AA-',
-    'A+',
-    'A',
-    'A-',
-    'BBB+',
-    'BBB',
-    'BBB-',
-    'BB+',
-    'BB',
-    'BB-',
-    'B+',
-    'B',
-    'B-',
-    'CCC+',
-    'CCC',
-    'CCC-',
-    'CC',
-    'C',
-    'D',
-]
 
 
 def create_credit_report(
@@ -43,7 +19,7 @@ def create_credit_report(
         credit_rating=credit_rating,
         date_time=date_time,
     )
-    print(f'        + Credit Report \'{credit_report.report_id}\' ({credit_report.date_time}) created', )
+    print(f"        + Credit Report '{credit_report.report_id}' ({credit_report.date_time}) created", )
     return credit_report
 
 
@@ -51,7 +27,7 @@ def random_credit_report(company: Company, date_time: datetime, ) -> CreditRepor
     credit_report = create_credit_report(
         company=company,
         probability_of_default=uniform(0, 1),
-        credit_rating=choice(RATINGS),
+        credit_rating=choice(CreditRating.as_list()).readable_name,
         date_time=date_time,
     )
     return credit_report

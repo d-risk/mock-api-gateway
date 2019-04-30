@@ -2,31 +2,34 @@ from datetime import datetime, timezone
 from random import randint
 
 from credit_report_service.common.management.commands._company import create_company
-from credit_report_service.common.management import create_credit_report
-from credit_report_service.common.management.commands._financial_report import REVENUE, EBIT, EBITDA, INTEREST_EXPENSE, PROFIT_BEFORE_TAX, \
-    PROFIT_AFTER_TAX, CASH_EQUIVALENTS, TOTAL_ASSETS, TOTAL_LIABILITIES, TOTAL_DEBT, TOTAL_EQUITY, CURRENT_ASSETS, \
-    CURRENT_LIABILITIES
-from credit_report_service.common.management.commands._financial_report import create_financial_report, create_financial_data
+from credit_report_service.common.management.commands._credit_report import create_credit_report
+from credit_report_service.common.management.commands._financial_report import (
+    REVENUE, EBIT, EBITDA, INTEREST_EXPENSE, PROFIT_BEFORE_TAX, PROFIT_AFTER_TAX, CASH_EQUIVALENTS, TOTAL_ASSETS,
+    TOTAL_LIABILITIES, TOTAL_DEBT, TOTAL_EQUITY, CURRENT_ASSETS, CURRENT_LIABILITIES,
+)
+from credit_report_service.common.management.commands._financial_report import (
+    create_financial_report, create_financial_data,
+)
 from credit_report_service.common.management.commands._news import create_news
 from credit_report_service.company.models import Company
 
 
 def create_singtel_company():
     company, created = create_company(
-        name='Singapore Telecommunications Limited',
-        description='Singapore Telecommunications Limited provides integrated infocomm technology solutions to '
-                    'enterprise customers primarily in Singapore, Australia, the United States of America, '
-                    'and Europe. The company operates through Group Consumer, Group Enterprise, and Group Digital '
-                    'Life segments. The Group Consumer segment is involved in carriage business, including mobile, '
-                    'pay TV, fixed broadband, and voice, as well as equipment sales. The Group Enterprise segment '
-                    'offers mobile, equipment sales, fixed voice and data, managed services, cloud computing, '
-                    'cyber security, and IT and professional consulting services. The Group Digital Life segment '
-                    'engages in digital marketing, regional video, and advanced analytics and intelligence '
-                    'businesses. The company also operates a venture capital fund that focuses its investments on '
-                    'technologies and solutions. Singapore Telecommunications Limited is headquartered in Singapore.',
-        industry='Telecommunications',
-        exchange='Singapore Stock Exchange',
-        country='SG',
+        name="Singapore Telecommunications Limited",
+        description="Singapore Telecommunications Limited provides integrated infocomm technology solutions to "
+                    "enterprise customers primarily in Singapore, Australia, the United States of America, "
+                    "and Europe. The company operates through Group Consumer, Group Enterprise, and Group Digital "
+                    "Life segments. The Group Consumer segment is involved in carriage business, including mobile, "
+                    "pay TV, fixed broadband, and voice, as well as equipment sales. The Group Enterprise segment "
+                    "offers mobile, equipment sales, fixed voice and data, managed services, cloud computing, "
+                    "cyber security, and IT and professional consulting services. The Group Digital Life segment "
+                    "engages in digital marketing, regional video, and advanced analytics and intelligence "
+                    "businesses. The company also operates a venture capital fund that focuses its investments on "
+                    "technologies and solutions. Singapore Telecommunications Limited is headquartered in Singapore.",
+        industry="Telecommunications",
+        exchange="Singapore Stock Exchange",
+        country="SG",
     )
     if created:
         # singtel has 4 financial reports
@@ -46,30 +49,30 @@ def create_singtel_company():
         # singtel has some randomly generated news
         create_news(
             company=company,
-            title='Singtel News 1',
+            title="Singtel News 1",
             date_time=datetime(year=2017, month=1, day=1, tzinfo=timezone.utc, ),
-            snippet='Snippet 1',
+            snippet="Snippet 1",
             url='https://singtel.com/',
         )
         create_news(
             company=company,
-            title='Singtel News 2',
+            title="Singtel News 2",
             date_time=datetime(year=2017, month=6, day=6, tzinfo=timezone.utc, ),
-            snippet='Snippet 2',
+            snippet="Snippet 2",
             url='https://singtel.com/',
         )
         create_news(
             company=company,
-            title='Singtel News 3',
+            title="Singtel News 3",
             date_time=datetime(year=2017, month=12, day=12, tzinfo=timezone.utc, ),
-            snippet='Snippet 3',
+            snippet="Snippet 3",
             url='https://singtel.com/',
         )
         create_news(
             company=company,
-            title='Singtel News 4',
+            title="Singtel News 4",
             date_time=datetime(year=2016, month=1, day=1, tzinfo=timezone.utc, ),
-            snippet='Snippet 4',
+            snippet="Snippet 4",
             url='https://singtel.com/',
         )
 
