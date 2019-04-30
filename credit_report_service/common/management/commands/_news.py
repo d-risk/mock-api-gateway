@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from random import choice
 from typing import List
 
-from company.models import Company
+from credit_report_service.company.models import Company
 from news.models import News
 
 

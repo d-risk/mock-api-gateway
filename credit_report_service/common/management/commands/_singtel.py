@@ -8,7 +8,7 @@ from credit_report_service.common.management.commands._financial_report import R
     CURRENT_LIABILITIES
 from credit_report_service.common.management.commands._financial_report import create_financial_report, create_financial_data
 from credit_report_service.common.management.commands._news import create_news
-from company.models import Company
+from credit_report_service.company.models import Company
 
 
 def create_singtel_company():

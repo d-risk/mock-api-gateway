@@ -10,7 +10,7 @@ import graphql
 from graphene import relay
 from graphene_django import filter
 
-from company.models import Company
+from credit_report_service.company.models import Company
 from credit_rating.models import CreditRating
 from credit_report.models import CreditReport as CreditReportModel
 

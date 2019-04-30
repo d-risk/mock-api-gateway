@@ -9,7 +9,7 @@ from django.db.models import QuerySet, functions
 from graphene import relay
 from graphene_django import filter
 
-from company.models import Company as CompanyModel
+from credit_report_service.company.models import Company as CompanyModel
 from credit_report.models import CreditReport as CreditReportModel
 from credit_report.schema import CreditReport
 

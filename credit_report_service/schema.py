@@ -1,6 +1,6 @@
 from graphene import Schema, ObjectType
 
-from company.schema import CompanyQuery
+from credit_report_service.company.schema import CompanyQuery
 from credit_rating.schema import CreditRatingQuery
 from credit_report.schema import CreditReportQuery, CreditReportMutation
 from financial_report.schema import FinancialReportQuery

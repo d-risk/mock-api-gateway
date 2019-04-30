@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from random import randint, uniform
 from typing import List, Dict
 
-from company.models import Company
+from credit_report_service.company.models import Company
 from financial_report.models import FinancialReport, FinancialData, FinancialRatio
 
 REVENUE = 'Revenue'

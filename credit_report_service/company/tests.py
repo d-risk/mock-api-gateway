@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from django.test import TestCase
 
-from company.models import Company
+from credit_report_service.company.models import Company
 
 
 # Create your tests here.
