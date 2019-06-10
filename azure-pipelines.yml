@@ -26,11 +26,13 @@ steps:
     displayName: 'Setup virtual environment'
 
   - bash: |
+      python --version
       python -m pip install --upgrade pip setuptools
       pip install -r requirements.freeze.txt
     displayName: 'Install prerequisites'
 
   - bash: |
+      python --version
       pip install --upgrade unittest-xml-reporting
       export APP_PRODUCTION="false"
       python manage.py migrate
