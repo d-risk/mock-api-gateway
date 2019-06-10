@@ -10,9 +10,9 @@ import graphql
 from graphene import relay
 from graphene_django import filter
 
-from credit_report_service.company.models import Company
-from credit_report_service.credit_rating.models import CreditRating
-from credit_report_service.credit_report.models import CreditReport as CreditReportModel
+from mock_api_gateway.company.models import Company
+from mock_api_gateway.credit_rating.models import CreditRating
+from mock_api_gateway.credit_report.models import CreditReport as CreditReportModel
 
 
 # Annex G - Credit Report Service

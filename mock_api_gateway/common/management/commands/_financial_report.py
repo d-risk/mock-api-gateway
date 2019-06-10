@@ -2,8 +2,8 @@ from datetime import datetime, timezone
 from random import randint, uniform
 from typing import List, Dict
 
-from credit_report_service.company.models import Company
-from credit_report_service.financial_report.models import FinancialReport, FinancialData, FinancialRatio
+from mock_api_gateway.company.models import Company
+from mock_api_gateway.financial_report.models import FinancialReport, FinancialData, FinancialRatio
 
 REVENUE = 'Revenue'
 EBIT = 'EBIT'

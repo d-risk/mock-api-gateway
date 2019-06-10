@@ -4,7 +4,7 @@ from typing import Tuple
 
 from django_countries import countries
 
-from credit_report_service.company.models import Company
+from mock_api_gateway.company.models import Company
 
 
 def create_company(

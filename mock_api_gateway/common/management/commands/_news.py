@@ -2,8 +2,8 @@ from datetime import datetime, timezone
 from random import choice
 from typing import List
 
-from credit_report_service.company.models import Company
-from credit_report_service.news.models import News
+from mock_api_gateway.company.models import Company
+from mock_api_gateway.news.models import News
 
 
 def create_news(

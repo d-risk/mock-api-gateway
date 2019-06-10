@@ -9,9 +9,9 @@ from django.db.models import QuerySet, functions
 from graphene import relay
 from graphene_django import filter
 
-from credit_report_service.company.models import Company as CompanyModel
-from credit_report_service.credit_report.models import CreditReport as CreditReportModel
-from credit_report_service.credit_report.schema import CreditReport
+from mock_api_gateway.company.models import Company as CompanyModel
+from mock_api_gateway.credit_report.models import CreditReport as CreditReportModel
+from mock_api_gateway.credit_report.schema import CreditReport
 
 
 # Annex F - Company Data Service

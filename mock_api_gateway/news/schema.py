@@ -7,7 +7,7 @@ from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql import ResolveInfo
 
-from credit_report_service.news.models import News as NewsModel
+from mock_api_gateway.news.models import News as NewsModel
 
 
 class NewsFilter(django_filters.FilterSet):

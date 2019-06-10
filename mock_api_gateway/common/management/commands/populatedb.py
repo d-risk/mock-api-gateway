@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
-from credit_report_service.common.management.commands._randomize import create_companies
-from credit_report_service.common.management.commands._singtel import create_singtel_company
+from mock_api_gateway.common.management.commands._randomize import create_companies
+from mock_api_gateway.common.management.commands._singtel import create_singtel_company
 
 COMPANIES = 'companies'
 # REPORTS = 'reports'

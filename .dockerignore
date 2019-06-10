@@ -1,7 +1,7 @@
 # ignore everything
 *
 # except the following
-!credit_report_service/
+!mock_api_gateway/
 !db.sqlite3
 !requirements.freeze.txt
 !uwsgi.yaml

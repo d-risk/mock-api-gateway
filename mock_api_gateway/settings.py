@@ -101,12 +101,12 @@ INSTALLED_APPS: List[str] = [
 
     'corsheaders',
 
-    'credit_report_service.common',
-    'credit_report_service.company',
-    'credit_report_service.credit_rating',
-    'credit_report_service.credit_report',
-    'credit_report_service.financial_report',
-    'credit_report_service.news',
+    'mock_api_gateway.common',
+    'mock_api_gateway.company',
+    'mock_api_gateway.credit_rating',
+    'mock_api_gateway.credit_report',
+    'mock_api_gateway.financial_report',
+    'mock_api_gateway.news',
 ]
 
 MIDDLEWARE: List[str] = [
@@ -125,7 +125,7 @@ CORS_ORIGIN_REGEX_WHITELIST = [
     r'^(https?://)?([\w-]+\.)?d-risk\.tech',
 ]
 
-ROOT_URLCONF: str = 'credit_report_service.urls'
+ROOT_URLCONF: str = 'mock_api_gateway.urls'
 
 TEMPLATES: List[Dict[str, Any]] = [
     {

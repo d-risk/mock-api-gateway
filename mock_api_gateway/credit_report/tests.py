@@ -3,8 +3,8 @@ from uuid import uuid4
 from django.test import TestCase
 from django.utils.timezone import now
 
-from credit_report_service.credit_rating.models import CreditRating
-from credit_report_service.credit_report.models import CreditReport
+from mock_api_gateway.credit_rating.models import CreditRating
+from mock_api_gateway.credit_report.models import CreditReport
 
 
 # Create your tests here.

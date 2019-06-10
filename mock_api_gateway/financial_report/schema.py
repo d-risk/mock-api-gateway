@@ -8,7 +8,7 @@ import graphql
 from graphene import relay
 from graphene_django import filter
 
-from credit_report_service.financial_report.models import (
+from mock_api_gateway.financial_report.models import (
     FinancialData as FinancialDataModel,
     FinancialRatio as FinancialRatioModel,
     FinancialReport as FinancialReportModel,

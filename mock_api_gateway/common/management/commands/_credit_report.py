@@ -2,9 +2,9 @@ from datetime import datetime, timezone
 from random import randint, choice, uniform
 from typing import List
 
-from credit_report_service.company.models import Company
-from credit_report_service.credit_rating.models import CreditRating
-from credit_report_service.credit_report.models import CreditReport
+from mock_api_gateway.company.models import Company
+from mock_api_gateway.credit_rating.models import CreditRating
+from mock_api_gateway.credit_report.models import CreditReport
 
 
 def create_credit_report(

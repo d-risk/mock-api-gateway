@@ -6,8 +6,8 @@ import graphene_django
 import graphql
 from graphene import relay
 
-from credit_report_service.credit_rating.models import CreditRating as CreditRatingEnum
-from credit_report_service.credit_rating.models import CreditRatingModel
+from mock_api_gateway.credit_rating.models import CreditRating as CreditRatingEnum
+from mock_api_gateway.credit_rating.models import CreditRatingModel
 
 
 class CreditRating(graphene_django.DjangoObjectType):
