@@ -23,16 +23,16 @@ steps:
   - bash: |
       python -m venv .venv
       source .venv/bin/activate
+      python -m pip install --upgrade pip setuptools
     displayName: 'Setup virtual environment'
 
   - bash: |
-      pip --version
-      python -m pip install --upgrade pip setuptools
+      source .venv/bin/activate
       pip install -r requirements.freeze.txt
     displayName: 'Install prerequisites'
 
   - bash: |
-      pip --version
+      source .venv/bin/activate
       pip install --upgrade unittest-xml-reporting
       export APP_PRODUCTION="false"
       python manage.py migrate
