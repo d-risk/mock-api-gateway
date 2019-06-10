@@ -4,7 +4,7 @@ pool:
 variables:
   - group: 'AWS Credentials'
   - name: pythonVersion
-    value: '3.7'
+    value: '3.7.3'
   - name: imageName
     value: 'drisk/mock-api-gateway'
   - name: latestImage
@@ -21,7 +21,6 @@ steps:
       versionSpec: $(pythonVersion)
 
   - bash: |
-      sudo apt install libsqlite3-dev
       python -m venv .venv
       source .venv/bin/activate
       python -m pip install --upgrade pip setuptools
@@ -33,6 +32,7 @@ steps:
     displayName: 'Install prerequisites'
 
   - bash: |
+
       source .venv/bin/activate
       pip install --upgrade unittest-xml-reporting
       python manage.py migrate
