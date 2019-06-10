@@ -2,7 +2,7 @@
 
 [![Build Status](https://dev.azure.com/d-risk/api-gateway/_apis/build/status/d-risk.mock-api-gateway?branchName=master)](https://dev.azure.com/d-risk/api-gateway/_build/latest?definitionId=16&branchName=master)
 
-This project is a microservice that provides credit reports on companies through [GraphQL].
+This project is a microservice that provides risk reports on companies through [GraphQL].
 You can learn more about GraphQL by following the given link.
 
 ## Getting Started
@@ -23,7 +23,7 @@ First, we need to clone this project on your local machine.
 Below is a commandline to clone this project to your local machine.
 
 ```commandline
-git clone https://github.com/d-risk/credit-report-service.git
+git clone https://github.com/d-risk/mock-api-gateway.git
 ```
 
 After cloning this project, it is time to create and populate a database for this service to use.
@@ -37,7 +37,7 @@ python manage.py populatedb --companies 100 --singtel
 
 The first argument `--companies` specifies how many companies to be generated.
 The above example `--companies 100` will create 100 companies.
-The `--singtel` will add a credit report for the company Singapore Telecommunication Limited.
+The `--singtel` will add a risk report for the company Singapore Telecommunication Limited.
 
 There are two ways to start this service: as a Docker container or using Python.
 
@@ -47,14 +47,14 @@ If you would like to run this service as a Docker container, there is a `Dockerf
 Below is the commandline to build a Docker image.
 
 ```commandline
-docker build -t d-risk/credit-report-service .
+docker build -t d-risk/mock-api-gateway .
 ```
 
 Once the Docker image is built, it is time to run the image.
 Below is the commandline to run the image.
 
 ```commandline
-docker run --name credit-report-service -p 8000:8080 --rm -it d-risk/credit-report-service
+docker run --name mock-api-gateway -p 8000:8080 --rm -it d-risk/mock-api-gateway
 ```
 
 When the Docker container is initialized, you can interact with this service using a browser through the given URL.
