@@ -1,4 +1,4 @@
-# Credit Report Service
+# Mock API Gateway
 
 [![Build Status](https://dev.azure.com/d-risk/credit-report-service/_apis/build/status/d-risk.credit-report-service?branchName=master)](https://dev.azure.com/d-risk/credit-report-service/_build/latest?definitionId=7&branchName=master)
 
