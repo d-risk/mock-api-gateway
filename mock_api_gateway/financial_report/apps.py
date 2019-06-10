@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class FinancialReportConfig(AppConfig):
-    name = 'credit_report_service.financial_report'
+    name = 'mock_api_gateway.financial_report'

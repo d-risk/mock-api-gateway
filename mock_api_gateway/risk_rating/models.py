@@ -6,7 +6,7 @@ from django.db import models
 
 # Create your models here.
 @enum.unique
-class CreditRating(enum.IntEnum):
+class RiskRating(enum.IntEnum):
     AAA = 1,
     AA_PLUS = 2,
     AA = 3,
@@ -31,17 +31,17 @@ class CreditRating(enum.IntEnum):
     D = 22,
 
     @property
-    def readable_name(self: 'CreditRating') -> str:
-        return super(CreditRating, self).name.replace('_PLUS', '+').replace('_MINUS', '-')
+    def readable_name(self: 'RiskRating') -> str:
+        return super(RiskRating, self).name.replace('_PLUS', '+').replace('_MINUS', '-')
 
     @classmethod
-    def as_list(cls: 'CreditRating') -> List['CreditRating']:
-        return [x for x in CreditRating]
+    def as_list(cls: 'RiskRating') -> List['RiskRating']:
+        return [x for x in RiskRating]
 
 
-class CreditRatingModel(models.Model):
+class RiskRatingModel(models.Model):
     order = models.IntegerField(primary_key=True, editable=False, )
     name = models.CharField(db_index=True, max_length=5, default=None, editable=False, )
 
     class Meta:
-        db_table = 'app_credit_ratings'
+        db_table = 'app_risk_ratings'

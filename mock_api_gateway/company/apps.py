@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class CompanyConfig(AppConfig):
-    name = 'credit_report_service.company'
+    name = 'mock_api_gateway.company'

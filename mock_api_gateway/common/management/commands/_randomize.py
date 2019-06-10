@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List
 
 from mock_api_gateway.common.management.commands._company import random_companies
-from mock_api_gateway.common.management.commands._credit_report import random_credit_reports
+from mock_api_gateway.common.management.commands._risk_report import random_risk_reports
 from mock_api_gateway.common.management.commands._financial_report import random_financial_reports
 from mock_api_gateway.common.management.commands._news import random_news_list
 from mock_api_gateway.company.models import Company
@@ -33,6 +33,6 @@ def create_companies(number_of_companies: int, from_year: int, to_year: int, ):
     companies: List[Company] = random_companies(nouns=nouns, number_of_companies=number_of_companies)
     for company in companies:
         print(f"Company '{company.name}' ({company.company_id}):")
-        random_credit_reports(company=company, from_year=from_year, to_year=to_year)
+        random_risk_reports(company=company, from_year=from_year, to_year=to_year)
         random_financial_reports(company=company, from_year=from_year, to_year=to_year)
         random_news_list(nouns=nouns, company=company, from_year=from_year, to_year=to_year)

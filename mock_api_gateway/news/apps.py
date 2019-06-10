@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class NewsConfig(AppConfig):
-    name = 'credit_report_service.news'
+    name = 'mock_api_gateway.news'

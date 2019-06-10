@@ -11,13 +11,12 @@ from graphene import relay
 from graphene_django import filter
 
 from mock_api_gateway.company.models import Company
-from mock_api_gateway.credit_rating.models import CreditRating
-from mock_api_gateway.credit_report.models import CreditReport as CreditReportModel
+from mock_api_gateway.risk_rating.models import RiskRating
+from mock_api_gateway.risk_report.models import RiskReport as RiskReportModel
 
 
-# Annex G - Credit Report Service
 # GraphQL data model
-class CreditReportFilter(django_filters.FilterSet):
+class RiskReportFilter(django_filters.FilterSet):
     company_id = django_filters.UUIDFilter(required=True, label='The UUID of the company', )
     year = django_filters.NumberFilter(
         field_name='date_time',
@@ -26,56 +25,56 @@ class CreditReportFilter(django_filters.FilterSet):
     )
 
     class Meta:
-        model = CreditReportModel
+        model = RiskReportModel
         fields = ['company_id', ]
 
     @property
     def qs(self):
-        return super(CreditReportFilter, self).qs.order_by('-date_time', )
+        return super(RiskReportFilter, self).qs.order_by('-date_time', )
 
 
-class CreditReport(graphene_django.DjangoObjectType):
+class RiskReport(graphene_django.DjangoObjectType):
     id = relay.GlobalID(description='A global ID that relay uses for reactive paging purposes', )
-    report_id = graphene.ID(description='The ID of the credit report', required=True, )
+    report_id = graphene.ID(description='The ID of the risk report', required=True, )
     company_id = graphene.UUID(
-        description='The company, as identified by the UUID, of the credit report',
+        description='The company, as identified by the UUID, of the risk report',
         required=True,
     )
     probability_of_default = graphene.Float(description='The probability of default of the company', required=True, )
-    credit_rating = graphene.String(description='The credit rating of the company', required=True, )
-    date_time = graphene.DateTime(description='The date and time of the credit report', required=True, )
+    risk_rating = graphene.String(description='The risk rating of the company', required=True, )
+    date_time = graphene.DateTime(description='The date and time of the risk report', required=True, )
 
     class Meta:
-        model = CreditReportModel
+        model = RiskReportModel
         interfaces = (relay.Node,)
-        description = 'A credit report'
+        description = 'A risk report'
 
 
-class CreditReportQuery(graphene.ObjectType):
-    credit_report = graphene.Field(
-        type=CreditReport,
-        description='Find a credit report using an ID',
-        report_id=graphene.ID(required=True, description='The ID of the credit report', )
+class RiskReportQuery(graphene.ObjectType):
+    risk_report = graphene.Field(
+        type=RiskReport,
+        description='Find a risk report using an ID',
+        report_id=graphene.ID(required=True, description='The ID of the risk report', )
     )
-    credit_reports_by_company = filter.DjangoFilterConnectionField(
-        type=CreditReport,
-        description='Search for a list of credit report of a company (by the given UUID) that is ordered by date and '
+    risk_reports_by_company = filter.DjangoFilterConnectionField(
+        type=RiskReport,
+        description='Search for a list of risk report of a company (by the given UUID) that is ordered by date and '
                     'time',
-        filterset_class=CreditReportFilter,
+        filterset_class=RiskReportFilter,
     )
 
-    def resolve_credit_report(
+    def resolve_risk_report(
             self,
             info: graphql.ResolveInfo,
             report_id: graphene.ID,
             **kwargs,
-    ) -> CreditReport:
+    ) -> RiskReport:
         logging.debug(f'self={self}, info={info}, report_id={report_id}, kwargs={kwargs}')
-        return CreditReportModel.objects.get(report_id=report_id, )
+        return RiskReportModel.objects.get(report_id=report_id, )
 
 
-class CustomCreditReport(graphene.Mutation):
-    Output = CreditReport
+class CustomRiskReport(graphene.Mutation):
+    Output = RiskReport
 
     class Arguments:
         company_id = graphene.UUID(description='The UUID of a company', required=True, )
@@ -87,22 +86,22 @@ class CustomCreditReport(graphene.Mutation):
             company_id: graphene.UUID,
             years: graphene.Int,
             **kwargs,
-    ) -> CreditReport:
+    ) -> RiskReport:
         logging.debug(f"self={self}, info={info}, company_id={company_id}, years={years}, kwargs={kwargs}")
         company = Company.objects.get(company_id=company_id)
         date_time = datetime.datetime.now(tz=timezone.utc)
-        credit_report = CreditReportModel(
+        risk_report = RiskReportModel(
             company_id=company.company_id,
             probability_of_default=uniform(0, 1),
-            credit_rating=choice([rating for rating in CreditRating]).readable_name,
+            risk_rating=choice([rating for rating in RiskRating]).readable_name,
             date_time=date_time,
         )
-        logging.debug(f"credit_report={credit_report}")
-        return credit_report
+        logging.debug(f"risk_report={risk_report}")
+        return risk_report
 
 
-class CreditReportMutation(graphene.ObjectType):
-    custom_credit_report = CustomCreditReport.Field(
-        description="Customize a credit report for a company using the average of the past number of years",
+class RiskReportMutation(graphene.ObjectType):
+    custom_risk_report = CustomRiskReport.Field(
+        description="Customize a risk report for a company using the average of the past number of years",
         required=True,
     )

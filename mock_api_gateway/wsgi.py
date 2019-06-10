@@ -1,5 +1,5 @@
 """
-WSGI config for credit_report_service project.
+WSGI config for mock_api_gateway project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -12,6 +12,6 @@ import os
 from django.core.handlers.wsgi import WSGIHandler
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'credit_report_service.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mock_api_gateway.settings')
 
 application: WSGIHandler = get_wsgi_application()

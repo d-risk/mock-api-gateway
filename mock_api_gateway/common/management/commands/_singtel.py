@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from random import randint
 
 from mock_api_gateway.common.management.commands._company import create_company
-from mock_api_gateway.common.management.commands._credit_report import create_credit_report
+from mock_api_gateway.common.management.commands._risk_report import create_risk_report
 from mock_api_gateway.common.management.commands._financial_report import (
     REVENUE, EBIT, EBITDA, INTEREST_EXPENSE, PROFIT_BEFORE_TAX, PROFIT_AFTER_TAX, CASH_EQUIVALENTS, TOTAL_ASSETS,
     TOTAL_LIABILITIES, TOTAL_DEBT, TOTAL_EQUITY, CURRENT_ASSETS, CURRENT_LIABILITIES,
@@ -38,11 +38,11 @@ def create_singtel_company():
         financial_report_2016(company),
         financial_report_2017(company),
 
-        # singtel has one credit report
-        create_credit_report(
+        # singtel has one risk report
+        create_risk_report(
             company=company,
             probability_of_default=randint(1, 1000),
-            credit_rating='AA',
+            risk_rating='AA',
             date_time=datetime.now(timezone.utc),
         )
 

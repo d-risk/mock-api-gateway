@@ -10,8 +10,8 @@ from graphene import relay
 from graphene_django import filter
 
 from mock_api_gateway.company.models import Company as CompanyModel
-from mock_api_gateway.credit_report.models import CreditReport as CreditReportModel
-from mock_api_gateway.credit_report.schema import CreditReport
+from mock_api_gateway.risk_report.models import RiskReport as RiskReportModel
+from mock_api_gateway.risk_report.schema import RiskReport
 
 
 # Annex F - Company Data Service
@@ -51,10 +51,10 @@ class CompanyRating(graphene.ObjectType):
         required=True,
         description='Information about a company',
     )
-    credit_report = graphene.Field(
-        type=CreditReport,
+    risk_report = graphene.Field(
+        type=RiskReport,
         required=True,
-        description='The latest credit rating associated to the company',
+        description='The latest risk rating associated to the company',
     )
 
     class Meta:
@@ -100,12 +100,12 @@ class CompanyQuery(graphene.ObjectType):
     ) -> List[CompanyRating]:
         logging.debug(f'self={self}, info={info}, kwargs={kwargs}')
         companies: QuerySet = CompanyModel.objects.all()
-        credit_reports: QuerySet = CreditReportModel.objects.all()
+        risk_reports: QuerySet = RiskReportModel.objects.all()
         results: List[CompanyRating] = []
         for company in companies:
-            credit_report: CreditReportModel = credit_reports.filter(
+            risk_report: RiskReportModel = risk_reports.filter(
                 company_id=company.company_id
             ).latest(field_name='date_time')
-            if credit_report.credit_rating in ratings:
-                results.append(CompanyRating(company=company, credit_report=credit_report))
+            if risk_report.risk_rating in ratings:
+                results.append(CompanyRating(company=company, risk_report=risk_report))
         return results
