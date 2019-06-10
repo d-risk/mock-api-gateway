@@ -1,17 +1,24 @@
 # this file must be in LF format, CRLF will cause problems parsing
 uwsgi:
-#  chdir: /home/app
-  http-socket: :8080
+  #  enable-metrics: true
+  enable-threads: true
+  #  chdir: /home/app
 #  http-auto-chunked: true
 #  http-keepalive: true
   master: true
+  processes: 2
+  threads: 2
+
+  http-socket: :8080
+  stats: :8081
+
+  thunder-lock: true
+  vacuum: true
+
+  uid: app
+  git: app
+
   plugin-list: true
   plugins: python3
-  processes: 1
-  stats: :8081
-  threads: 1
-  thunder-lock: true
-  uid: app
-  venv: venv-app
-  wsgi-file: credit_report_service/wsgi.py
-
+  venv: .venv
+  wsgi-file: mock_api_gateway/wsgi.py

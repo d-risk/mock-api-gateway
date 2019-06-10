@@ -6,13 +6,13 @@ RUN apk add --no-cache --update \
     	uwsgi-python3
 
 ARG user=app
-ARG workdir=/home/${user}
+ARG workdir=/${user}
 ARG requirements=requirements.freeze.txt
+ARG venv=.venv
 
-RUN addgroup -S ${user} && adduser -G ${user} -S ${user}
+RUN addgroup -S ${user} && adduser -G ${user} -h ${workdir} -S ${user}
 
 USER ${user}
-
 WORKDIR ${workdir}
 
 # only copy the requirements.freeze.txt file so that the
@@ -20,14 +20,13 @@ WORKDIR ${workdir}
 # the requirements.freeze.txt file changes
 COPY --chown=app:app ${requirements} ${workdir}
 
-RUN python3 -m venv venv-app \
-    && source venv-app/bin/activate \
-    && python3 -m pip install --upgrade pip setuptools \
-    && pip3 install --no-cache-dir --requirement ${requirements}
+RUN python3 -m venv ${venv} \
+    && source ${venv}/bin/activate \
+    && python -m pip install --upgrade pip setuptools \
+    && pip install --no-cache-dir --requirement ${requirements}
 
 COPY --chown=app:app . ${workdir}
 
-# TODO resolve the issue with secret key
 ENV APP_PRODUCTION "false"
 
 CMD ["uwsgi", "--yaml", "uwsgi.yaml"]
