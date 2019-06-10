@@ -103,10 +103,10 @@ INSTALLED_APPS: List[str] = [
 
     'mock_api_gateway.common',
     'mock_api_gateway.company',
-    'mock_api_gateway.risk_rating',
-    'mock_api_gateway.risk_report',
     'mock_api_gateway.financial_report',
     'mock_api_gateway.news',
+    'mock_api_gateway.risk_rating',
+    'mock_api_gateway.risk_report',
 ]
 
 MIDDLEWARE: List[str] = [
