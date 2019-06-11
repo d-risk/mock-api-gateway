@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('report_id', models.AutoField(primary_key=True, serialize=False)),
                 ('company_id', models.UUIDField(db_index=True, editable=False)),
-                ('probability_of_default', models.DecimalField(decimal_places=2, editable=False, max_digits=9)),
+                ('risk_score', models.DecimalField(decimal_places=2, editable=False, max_digits=9)),
                 ('risk_rating', models.CharField(editable=False, max_length=5)),
                 ('date_time', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
             ],

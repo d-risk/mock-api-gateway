@@ -12,6 +12,7 @@ from mock_api_gateway.common.management.commands._financial_report import (
 )
 from mock_api_gateway.common.management.commands._news import create_news
 from mock_api_gateway.company.models import Company
+from risk_rating.models import RiskRating
 
 
 def create_singtel_company():
@@ -41,8 +42,8 @@ def create_singtel_company():
         # singtel has one risk report
         create_risk_report(
             company=company,
-            probability_of_default=randint(1, 1000),
-            risk_rating='AA',
+            risk_score=RiskRating.AA.value,
+            risk_rating=RiskRating.AA.readable_name,
             date_time=datetime.now(timezone.utc),
         )
 

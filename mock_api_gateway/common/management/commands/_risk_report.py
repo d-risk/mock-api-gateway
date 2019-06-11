@@ -9,13 +9,13 @@ from mock_api_gateway.risk_report.models import RiskReport
 
 def create_risk_report(
         company: Company,
-        probability_of_default: float,
+        risk_score: float,
         risk_rating: str,
         date_time: datetime,
 ) -> RiskReport:
     risk_report = RiskReport.objects.create(
         company_id=company.company_id,
-        probability_of_default=probability_of_default,
+        risk_score=risk_score,
         risk_rating=risk_rating,
         date_time=date_time,
     )
@@ -26,7 +26,7 @@ def create_risk_report(
 def random_risk_report(company: Company, date_time: datetime, ) -> RiskReport:
     risk_report = create_risk_report(
         company=company,
-        probability_of_default=uniform(0, 1),
+        risk_score=uniform(RiskRating.AAA.value, RiskRating.D.value),
         risk_rating=choice(RiskRating.as_list()).readable_name,
         date_time=date_time,
     )

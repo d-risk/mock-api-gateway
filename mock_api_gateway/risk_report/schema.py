@@ -40,7 +40,7 @@ class RiskReport(graphene_django.DjangoObjectType):
         description='The company, as identified by the UUID, of the risk report',
         required=True,
     )
-    probability_of_default = graphene.Float(description='The probability of default of the company', required=True, )
+    risk_score = graphene.Float(description='The risk score of the company', required=True, )
     risk_rating = graphene.String(description='The risk rating of the company', required=True, )
     date_time = graphene.DateTime(description='The date and time of the risk report', required=True, )
 
@@ -92,7 +92,7 @@ class CustomRiskReport(graphene.Mutation):
         date_time = datetime.datetime.now(tz=timezone.utc)
         risk_report = RiskReportModel(
             company_id=company.company_id,
-            probability_of_default=uniform(0, 1),
+            risk_score=uniform(1, 24),
             risk_rating=choice([rating for rating in RiskRating]).readable_name,
             date_time=date_time,
         )
