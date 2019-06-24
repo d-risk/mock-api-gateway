@@ -20,33 +20,26 @@ from django.utils.crypto import get_random_string
 from requests import Response
 
 
-def is_production() -> bool:
-    """
-    Always assume that code is running in production unless explicitly specified.
-    :return: False if the code is to be executed in non-production mode, otherwise True.
-    """
-    return not bool(os.getenv('APP_PRODUCTION'))
-
-
 def log_level() -> int:
-    if is_production():
-        return os.getenv('APP_LOG_LEVEL', logging.INFO)
-    else:
-        return logging.DEBUG
+    return os.getenv('APP_LOG_LEVEL', logging.INFO)
 
 
 def secret_key() -> str:
-    if is_production():
-        key = os.getenv('APP_SECRET_KEY')
-        if key is None or key == '':
-            logger.error(f"Secret key is not defined: {key}")
-            raise LookupError()
-        return key
-    else:
-        return get_random_string(length=50)
+    return os.getenv('APP_SECRET_KEY', get_random_string(length=50))
 
 
-def add_aws_ecs_private_ip(hosts: List[str]):
+def allowed_hosts(logger: Logger = logging.getLogger(__name__)) -> List[str]:
+    hosts = [
+        '.d-risk.tech',
+        'localhost',
+        '127.0.0.1',
+    ]
+    add_aws_ecs_private_ip(hosts)
+    logger.info(f"ALLOWED_HOSTS={ALLOWED_HOSTS}")
+    return hosts
+
+
+def add_aws_ecs_private_ip(hosts: List[str], logger: Logger = logging.getLogger(__name__)):
     try:
         response: Response = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01)
         if response.status_code == 200:
@@ -61,8 +54,6 @@ def add_aws_ecs_private_ip(hosts: List[str]):
 
 
 logging.basicConfig(level=log_level())
-logger: Logger = logging.getLogger(__name__)
-logger.info(f"APP_PRODUCTION={is_production()}")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -74,28 +65,13 @@ BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY: str = secret_key()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG: bool = not is_production()
-logger.info(f"DEBUG={DEBUG}")
+DEBUG: bool = True
 
-ALLOWED_HOSTS: List[str] = [
-    '.d-risk.tech',
-]
-if DEBUG:
-    ALLOWED_HOSTS.append('localhost')
-    ALLOWED_HOSTS.append('127.0.0.1')
-add_aws_ecs_private_ip(ALLOWED_HOSTS)
-logger.info(f"ALLOWED_HOSTS={ALLOWED_HOSTS}")
+ALLOWED_HOSTS: List[str] = allowed_hosts()
 
 # Application definition
 
 INSTALLED_APPS: List[str] = [
-    # 'django.contrib.admin',
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
-    # 'django.contrib.sessions',
-    # 'django.contrib.messages',
-    # 'django.contrib.staticfiles',
-
     # Graphene Django
     'graphene_django',
 
@@ -111,13 +87,6 @@ INSTALLED_APPS: List[str] = [
 
 MIDDLEWARE: List[str] = [
     'corsheaders.middleware.CorsMiddleware',
-    # 'django.middleware.security.SecurityMiddleware',
-    # 'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
-    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
-    # 'django.contrib.messages.middleware.MessageMiddleware',
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 # CORS
@@ -133,12 +102,7 @@ TEMPLATES: List[Dict[str, Any]] = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': [
-                # 'django.template.context_processors.debug',
-                # 'django.template.context_processors.request',
-                # 'django.contrib.auth.context_processors.auth',
-                # 'django.contrib.messages.context_processors.messages',
-            ],
+            'context_processors': [],
         },
     },
 ]
@@ -158,20 +122,7 @@ DATABASES: Dict[str, Dict[str, str]] = {
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS: List[Dict[str, str]] = [
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    # },
-]
+AUTH_PASSWORD_VALIDATORS: List[Dict[str, str]] = []
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
