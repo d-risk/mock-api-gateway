@@ -24,21 +24,15 @@ steps:
       python -m venv .venv
       source .venv/bin/activate
       python -m pip install --upgrade pip setuptools
+      pip install -r requirements.freeze.txt
+      pip install --upgrade unittest-xml-reporting
     displayName: 'Setup virtual environment'
 
   - bash: |
       source .venv/bin/activate
-      pip install -r requirements.freeze.txt
-    displayName: 'Install prerequisites'
-
-  - bash: |
-      source .venv/bin/activate
-      pip install --upgrade unittest-xml-reporting
       python manage.py migrate
       python manage.py test --testrunner xmlrunner.extra.djangotestrunner.XMLTestRunner --no-input
     displayName: 'Run tests for Python $(pythonVersion)'
-    env:
-      APP_PRODUCTION: false
 
   - task: PublishTestResults@2
     inputs:
@@ -46,17 +40,11 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
     condition: succeededOrFailed()
 
-  - bash: |
-      source .venv/bin/activate
-      python manage.py populatedb --companies 100 --singtel
-      docker build . --tag $(latestImage) --tag $(versionedImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionedImage)
+  - bash: docker build . --tag $(latestImage) --tag $(versionedImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionedImage)
     displayName: 'Build Docker image'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    env:
-      APP_PRODUCTION: false
 
   - bash: |
-      source .venv/bin/activate
       pip install --upgrade awscli
       $(aws ecr get-login --no-include-email)
       aws ecr create-repository --repository-name $(imageName)
