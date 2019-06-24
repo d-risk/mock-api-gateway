@@ -1,8 +1,6 @@
 from datetime import datetime, timezone
-from random import randint
 
 from mock_api_gateway.common.management.commands._company import create_company
-from mock_api_gateway.common.management.commands._risk_report import create_risk_report
 from mock_api_gateway.common.management.commands._financial_report import (
     REVENUE, EBIT, EBITDA, INTEREST_EXPENSE, PROFIT_BEFORE_TAX, PROFIT_AFTER_TAX, CASH_EQUIVALENTS, TOTAL_ASSETS,
     TOTAL_LIABILITIES, TOTAL_DEBT, TOTAL_EQUITY, CURRENT_ASSETS, CURRENT_LIABILITIES,
@@ -11,8 +9,9 @@ from mock_api_gateway.common.management.commands._financial_report import (
     create_financial_report, create_financial_data,
 )
 from mock_api_gateway.common.management.commands._news import create_news
+from mock_api_gateway.common.management.commands._risk_report import create_risk_report
 from mock_api_gateway.company.models import Company
-from risk_rating.models import RiskRating
+from mock_api_gateway.risk_rating.models import RiskRating
 
 
 def create_singtel_company():
