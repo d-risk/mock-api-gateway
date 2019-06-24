@@ -4,7 +4,7 @@ pool:
 variables:
   - group: 'AWS Credentials'
   - name: pythonVersion
-    value: '3.7.3'
+    value: '3.7.2'
   - name: imageName
     value: 'drisk/mock-api-gateway'
   - name: latestImage
