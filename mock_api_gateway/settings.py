@@ -35,7 +35,7 @@ def allowed_hosts(logger: Logger = logging.getLogger(__name__)) -> List[str]:
         '127.0.0.1',
     ]
     add_aws_ecs_private_ip(hosts)
-    logger.info(f"ALLOWED_HOSTS={ALLOWED_HOSTS}")
+    logger.info(f"hosts={hosts}")
     return hosts
 
 
