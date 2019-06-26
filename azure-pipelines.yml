@@ -14,6 +14,9 @@ variables:
   - name: awsRegion
     value: '268927183565.dkr.ecr.ap-southeast-1.amazonaws.com'
 
+pr:
+  - master
+
 steps:
   - task: UsePythonVersion@0
     inputs:
