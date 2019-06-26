@@ -11,7 +11,7 @@ variables:
     value: '$(imageName):latest'
   - name: versionImage
     value: '$(imageName):$(Build.BuildId)'
-  - name: awsRegion
+  - name: awsRepository
     value: '268927183565.dkr.ecr.ap-southeast-1.amazonaws.com'
 
 pr:
@@ -43,7 +43,7 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
     condition: succeededOrFailed()
 
-  - bash: docker build . --tag $(latestImage) --tag $(versionImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionImage)
+  - bash: docker build . --tag $(latestImage) --tag $(versionImage) --tag $(awsRepository)/$(latestImage) --tag $(awsRepository)/$(versionImage)
     displayName: 'Build Docker image'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
@@ -51,7 +51,7 @@ steps:
       pip install --upgrade awscli
       $(aws ecr get-login --no-include-email)
       aws ecr create-repository --repository-name $(imageName)
-      docker push $(awsRegion)/$(imageName)
+      docker push $(awsRepository)/$(imageName)
     displayName: 'Push Docker image to AWS ECR repository'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     env:
