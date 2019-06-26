@@ -9,7 +9,7 @@ variables:
     value: 'drisk/mock-api-gateway'
   - name: latestImage
     value: '$(imageName):latest'
-  - name: versionedImage
+  - name: versionImage
     value: '$(imageName):$(Build.BuildId)'
   - name: awsRegion
     value: '268927183565.dkr.ecr.ap-southeast-1.amazonaws.com'
@@ -43,7 +43,7 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
     condition: succeededOrFailed()
 
-  - bash: docker build . --tag $(latestImage) --tag $(versionedImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionedImage)
+  - bash: docker build . --tag $(latestImage) --tag $(versionImage) --tag $(awsRegion)/$(latestImage) --tag $(awsRegion)/$(versionImage)
     displayName: 'Build Docker image'
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
