@@ -9,51 +9,13 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-import ipaddress
 import logging
 import os
-from logging import Logger
 from typing import List, Dict, Any
 
-import requests
 from django.utils.crypto import get_random_string
-from requests import Response
 
-
-def log_level() -> int:
-    return os.getenv('APP_LOG_LEVEL', logging.INFO)
-
-
-def secret_key() -> str:
-    return os.getenv('APP_SECRET_KEY', get_random_string(length=50))
-
-
-def allowed_hosts(logger: Logger = logging.getLogger(__name__)) -> List[str]:
-    hosts = [
-        '.d-risk.tech',
-        'localhost',
-        '127.0.0.1',
-    ]
-    add_aws_ecs_private_ip(hosts)
-    logger.info(f"hosts={hosts}")
-    return hosts
-
-
-def add_aws_ecs_private_ip(hosts: List[str], logger: Logger = logging.getLogger(__name__)):
-    try:
-        response: Response = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01)
-        if response.status_code == 200:
-            ip: str = response.text
-            try:
-                ipaddress.ip_address(ip)
-                hosts.append(ip)
-            except ValueError as error:
-                logger.warning(f"'{ip}' is not a proper IPv4 address:{error}")
-    except requests.exceptions.RequestException as error:
-        logger.warning(f"Unable to get AWS ECS local private IPv4: {error}")
-
-
-logging.basicConfig(level=log_level())
+logging.basicConfig(level=os.getenv('APP_LOG_LEVEL', logging.INFO))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -62,12 +24,16 @@ BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY: str = secret_key()
+SECRET_KEY: str = os.getenv('APP_SECRET_KEY', get_random_string(length=50))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG: bool = True
 
-ALLOWED_HOSTS: List[str] = allowed_hosts()
+ALLOWED_HOSTS: List[str] = [
+    '.d-risk.tech',
+    'localhost',
+    '127.0.0.1',
+]
 
 # Application definition
 
