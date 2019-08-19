@@ -92,6 +92,7 @@ MIDDLEWARE: List[str] = [
 # CORS
 CORS_ORIGIN_REGEX_WHITELIST = [
     r'^(https?://)?([\w-]+\.)?d-risk\.tech',
+    r'http://localhost(:\d{1,5})?',
 ]
 
 ROOT_URLCONF: str = 'mock_api_gateway.urls'
